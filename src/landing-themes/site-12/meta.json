@@ -1,0 +1,671 @@
+{
+  "id": "site-12",
+  "kind": "site",
+  "name": "Website-Theme 12",
+  "description": "Skandinavisch & klar: helles Grau, kühles Blau, ruhige nordische Klarheit. Mehrseitige Komplett-Website.",
+  "fonts": {
+    "family": "Jost:wght@400;500;600|Inter:wght@400;500;600",
+    "stacks": {
+      "klassisch": "Jost",
+      "elegant": "Fraunces",
+      "modern": "Space Grotesk"
+    }
+  },
+  "colors": {
+    "primary": "#3b6ea5",
+    "secondary": "#1f2a36"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "Startseite"
+    },
+    {
+      "id": "jobs",
+      "slug": "jobs",
+      "title": "Leistungen & Jobs"
+    },
+    {
+      "id": "team",
+      "slug": "team",
+      "title": "Über uns & Team"
+    },
+    {
+      "id": "faq",
+      "slug": "faq",
+      "title": "FAQ"
+    },
+    {
+      "id": "kontakt",
+      "slug": "kontakt",
+      "title": "Kontakt"
+    }
+  ],
+  "slots": [
+    {
+      "key": "brand_name",
+      "label": "Firmenname (Kopfbereich)",
+      "type": "text",
+      "default": "Muster Digital Services"
+    },
+    {
+      "key": "cta_label",
+      "label": "CTA-Button (Kopfzeile)",
+      "type": "text",
+      "default": "Jetzt bewerben"
+    },
+    {
+      "key": "font_set",
+      "label": "Schrift-Set: klassisch / elegant / modern",
+      "type": "text",
+      "default": "modern"
+    },
+    {
+      "key": "footer_claim",
+      "label": "Fußzeile – Anspruch",
+      "type": "longtext",
+      "default": "Ihr Arbeitgeber für Qualitätssicherung im Homeoffice. Fest angestellt, flexibel, fair bezahlt."
+    },
+    {
+      "key": "nav_home_label",
+      "label": "Nav: Start",
+      "type": "text",
+      "default": "Start"
+    },
+    {
+      "key": "nav_jobs",
+      "label": "Nav: Leistungen & Jobs",
+      "type": "text",
+      "default": "Aufgaben & Jobs"
+    },
+    {
+      "key": "nav_team",
+      "label": "Nav: Über uns & Team",
+      "type": "text",
+      "default": "Über uns & Team"
+    },
+    {
+      "key": "nav_faq",
+      "label": "Nav: FAQ",
+      "type": "text",
+      "default": "FAQ"
+    },
+    {
+      "key": "nav_kontakt",
+      "label": "Nav: Kontakt",
+      "type": "text",
+      "default": "Kontakt"
+    },
+    {
+      "key": "home_hero_kicker",
+      "label": "Start: Kicker",
+      "type": "text",
+      "default": "Klar. Ruhig. Verlässlich."
+    },
+    {
+      "key": "home_hero_title",
+      "label": "Start: Hauptüberschrift",
+      "type": "longtext",
+      "default": "Arbeiten im Homeoffice mit nordischer Klarheit"
+    },
+    {
+      "key": "home_hero_sub",
+      "label": "Start: Untertitel",
+      "type": "longtext",
+      "default": "Sie testen Apps und Webseiten – strukturiert, ehrlich und ohne Umwege. Fest angestellt, mit freier Zeiteinteilung."
+    },
+    {
+      "key": "home_hero_image",
+      "label": "Start: Hero-Bild",
+      "type": "image",
+      "default": "https://id-preview--9d4289b9-34d3-45dd-b827-b898ea736807.lovable.app/__l5e/assets-v1/a016fd83-1920-4187-bce3-9a7602a2fd4a/hero.jpg"
+    },
+    {
+      "key": "home_fact1_v",
+      "label": "Start: Zahl 1",
+      "type": "text",
+      "default": "19–21 €"
+    },
+    {
+      "key": "home_fact1_l",
+      "label": "Start: Zahl 1 Text",
+      "type": "text",
+      "default": "Stundenlohn"
+    },
+    {
+      "key": "home_fact2_v",
+      "label": "Start: Zahl 2",
+      "type": "text",
+      "default": "100 %"
+    },
+    {
+      "key": "home_fact2_l",
+      "label": "Start: Zahl 2 Text",
+      "type": "text",
+      "default": "Homeoffice"
+    },
+    {
+      "key": "home_fact3_v",
+      "label": "Start: Zahl 3",
+      "type": "text",
+      "default": "8–21 Uhr"
+    },
+    {
+      "key": "home_fact3_l",
+      "label": "Start: Zahl 3 Text",
+      "type": "text",
+      "default": "freie Zeiteinteilung"
+    },
+    {
+      "key": "home_intro_title",
+      "label": "Start: Über-uns-Titel",
+      "type": "text",
+      "default": "Gute Arbeit beginnt mit Klarheit"
+    },
+    {
+      "key": "home_intro_text",
+      "label": "Start: Über-uns-Text",
+      "type": "longtext",
+      "default": "Wir prüfen Apps, Webseiten und digitale Abläufe für namhafte Auftraggeber. Sie arbeiten bei uns in Festanstellung von zuhause aus – mit bezahlter Einarbeitung und einem persönlichen Teamleiter an Ihrer Seite."
+    },
+    {
+      "key": "home_intro_image",
+      "label": "Start: Über-uns-Bild",
+      "type": "image",
+      "default": "https://id-preview--9d4289b9-34d3-45dd-b827-b898ea736807.lovable.app/__l5e/assets-v1/94b51c44-977d-444f-8d11-4b0c872f5819/team.jpg"
+    },
+    {
+      "key": "home_services_title",
+      "label": "Start: Leistungen-Titel",
+      "type": "text",
+      "default": "Ihre Aufgaben"
+    },
+    {
+      "key": "home_services_sub",
+      "label": "Start: Leistungen-Untertitel",
+      "type": "longtext",
+      "default": "Abwechslungsreiche Tätigkeiten am eigenen Rechner – Vorerfahrung ist nicht nötig."
+    },
+    {
+      "key": "home_sv1_t",
+      "label": "Start: Leistung 1 Titel",
+      "type": "text",
+      "default": "Apps & Webseiten testen"
+    },
+    {
+      "key": "home_sv1_d",
+      "label": "Start: Leistung 1 Text",
+      "type": "longtext",
+      "default": "Sie prüfen Anwendungen unserer Auftraggeber auf Funktion, Verständlichkeit und Nutzerfreundlichkeit."
+    },
+    {
+      "key": "home_sv2_t",
+      "label": "Start: Leistung 2 Titel",
+      "type": "text",
+      "default": "Ergebnisse dokumentieren"
+    },
+    {
+      "key": "home_sv2_d",
+      "label": "Start: Leistung 2 Text",
+      "type": "longtext",
+      "default": "Ihre Eindrücke halten Sie in kurzen, standardisierten Fragebögen fest – klar strukturiert und schnell erledigt."
+    },
+    {
+      "key": "home_sv3_t",
+      "label": "Start: Leistung 3 Titel",
+      "type": "text",
+      "default": "Prozesse prüfen"
+    },
+    {
+      "key": "home_sv3_d",
+      "label": "Start: Leistung 3 Text",
+      "type": "longtext",
+      "default": "Sie durchlaufen digitale Abläufe wie Registrierungen oder Bestellungen und melden, was nicht rund läuft."
+    },
+    {
+      "key": "home_quote_text",
+      "label": "Start: Zitat",
+      "type": "longtext",
+      "default": "Ich hatte nie im Homeoffice gearbeitet. Nach der bezahlten Einarbeitung lief alles rund – und ich bestimme selbst, wann ich starte."
+    },
+    {
+      "key": "home_quote_author",
+      "label": "Start: Zitat-Autor",
+      "type": "text",
+      "default": "Sandra M., in Teilzeit seit 14 Monaten"
+    },
+    {
+      "key": "home_steps_title",
+      "label": "Start: Ablauf-Titel",
+      "type": "text",
+      "default": "So starten Sie bei uns"
+    },
+    {
+      "key": "home_s1_t",
+      "label": "Start: Schritt 1 Titel",
+      "type": "text",
+      "default": "Bewerben"
+    },
+    {
+      "key": "home_s1_d",
+      "label": "Start: Schritt 1 Text",
+      "type": "longtext",
+      "default": "Kurzes Online-Formular in zwei Minuten – ohne Anschreiben und ohne Lebenslauf-Pflicht."
+    },
+    {
+      "key": "home_s2_t",
+      "label": "Start: Schritt 2 Titel",
+      "type": "text",
+      "default": "Kennenlernen"
+    },
+    {
+      "key": "home_s2_d",
+      "label": "Start: Schritt 2 Text",
+      "type": "longtext",
+      "default": "In einem kurzen Gespräch klären wir Ihre Wunsch-Stunden und beantworten alle Fragen."
+    },
+    {
+      "key": "home_s3_t",
+      "label": "Start: Schritt 3 Titel",
+      "type": "text",
+      "default": "Loslegen"
+    },
+    {
+      "key": "home_s3_d",
+      "label": "Start: Schritt 3 Text",
+      "type": "longtext",
+      "default": "Vertrag digital unterschreiben, bezahlte Einarbeitung starten – und schon nach wenigen Tagen arbeiten."
+    },
+    {
+      "key": "home_final_title",
+      "label": "Start: Abschluss-CTA Titel",
+      "type": "text",
+      "default": "Bereit für Ihren Start im Homeoffice?"
+    },
+    {
+      "key": "home_final_sub",
+      "label": "Start: Abschluss-CTA Text",
+      "type": "longtext",
+      "default": "Bewerbung in zwei Minuten abschließen – wir melden uns schnell und persönlich."
+    },
+    {
+      "key": "jobs_title",
+      "label": "Jobs: Titel",
+      "type": "text",
+      "default": "Aufgaben & offene Stellen"
+    },
+    {
+      "key": "jobs_intro",
+      "label": "Jobs: Einführung",
+      "type": "longtext",
+      "default": "Wir suchen sorgfältige Mitarbeitende, die von zuhause aus digitale Produkte testen. Wählen Sie das Stundenmodell, das zu Ihrem Leben passt."
+    },
+    {
+      "key": "jobs_image",
+      "label": "Jobs: Bild",
+      "type": "image",
+      "default": "https://id-preview--9d4289b9-34d3-45dd-b827-b898ea736807.lovable.app/__l5e/assets-v1/6914de29-7471-482d-8c20-6bccd8a97b12/jobs.jpg"
+    },
+    {
+      "key": "jobs_j1_title",
+      "label": "Job 1 Titel",
+      "type": "text",
+      "default": "Mitarbeiter Qualitätssicherung im Minijob (m/w/d)"
+    },
+    {
+      "key": "jobs_j1_meta",
+      "label": "Job 1 Details",
+      "type": "text",
+      "default": "Homeoffice · ca. 40 Std./Monat · ab sofort"
+    },
+    {
+      "key": "jobs_j1_text",
+      "label": "Job 1 Text",
+      "type": "longtext",
+      "default": "Ideal als Nebenverdienst: Apps und Webseiten testen, wann es Ihnen passt – zwischen 8 und 21 Uhr."
+    },
+    {
+      "key": "jobs_j2_title",
+      "label": "Job 2 Titel",
+      "type": "text",
+      "default": "Mitarbeiter Qualitätssicherung in Teilzeit (m/w/d)"
+    },
+    {
+      "key": "jobs_j2_meta",
+      "label": "Job 2 Details",
+      "type": "text",
+      "default": "Homeoffice · ca. 120 Std./Monat · sozialversichert"
+    },
+    {
+      "key": "jobs_j2_text",
+      "label": "Job 2 Text",
+      "type": "longtext",
+      "default": "Feste Anstellung mit vollem Sozialversicherungsschutz und freier Einteilung Ihrer Arbeitszeit."
+    },
+    {
+      "key": "jobs_j3_title",
+      "label": "Job 3 Titel",
+      "type": "text",
+      "default": "Mitarbeiter Qualitätssicherung in Vollzeit (m/w/d)"
+    },
+    {
+      "key": "jobs_j3_meta",
+      "label": "Job 3 Details",
+      "type": "text",
+      "default": "Homeoffice · ca. 160 Std./Monat · unbefristet"
+    },
+    {
+      "key": "jobs_j3_text",
+      "label": "Job 3 Text",
+      "type": "longtext",
+      "default": "Voller Einsatz im eigenen Rhythmus – mit Equipment nach der Probezeit und persönlichem Teamleiter."
+    },
+    {
+      "key": "jobs_benefits_title",
+      "label": "Jobs: Benefits-Titel",
+      "type": "text",
+      "default": "Was Sie bei uns erwartet"
+    },
+    {
+      "key": "jobs_b1",
+      "label": "Benefit 1",
+      "type": "text",
+      "default": "Festanstellung mit Sozialversicherung"
+    },
+    {
+      "key": "jobs_b2",
+      "label": "Benefit 2",
+      "type": "text",
+      "default": "19–21 € pro Stunde"
+    },
+    {
+      "key": "jobs_b3",
+      "label": "Benefit 3",
+      "type": "text",
+      "default": "Bezahlte Einarbeitung"
+    },
+    {
+      "key": "jobs_b4",
+      "label": "Benefit 4",
+      "type": "text",
+      "default": "Freie Zeiteinteilung von 8 bis 21 Uhr"
+    },
+    {
+      "key": "jobs_final_title",
+      "label": "Jobs: Abschluss-CTA Titel",
+      "type": "text",
+      "default": "Noch Fragen zur Stelle?"
+    },
+    {
+      "key": "jobs_final_text",
+      "label": "Jobs: Abschluss-CTA Text",
+      "type": "longtext",
+      "default": "Bewerben Sie sich unverbindlich – im Kennenlerngespräch klären wir alles Weitere."
+    },
+    {
+      "key": "team_title",
+      "label": "Team: Titel",
+      "type": "text",
+      "default": "Über uns & Team"
+    },
+    {
+      "key": "team_intro",
+      "label": "Team: Einführung",
+      "type": "longtext",
+      "default": "Hinter jedem Auftrag steht ein eingespieltes Team. Ihr persönlicher Teamleiter ist im Portal jederzeit für Sie erreichbar."
+    },
+    {
+      "key": "team_image",
+      "label": "Team: Bild",
+      "type": "image",
+      "default": "https://id-preview--9d4289b9-34d3-45dd-b827-b898ea736807.lovable.app/__l5e/assets-v1/94b51c44-977d-444f-8d11-4b0c872f5819/team.jpg"
+    },
+    {
+      "key": "team_p1_name",
+      "label": "Person 1 Name",
+      "type": "text",
+      "default": "Thomas Brandt"
+    },
+    {
+      "key": "team_p1_role",
+      "label": "Person 1 Rolle",
+      "type": "text",
+      "default": "Geschäftsführung"
+    },
+    {
+      "key": "team_p1_line",
+      "label": "Person 1 Text",
+      "type": "longtext",
+      "default": "Verantwortet die Zusammenarbeit mit unseren Auftraggebern und die Qualität aller Tests."
+    },
+    {
+      "key": "team_p2_name",
+      "label": "Person 2 Name",
+      "type": "text",
+      "default": "Miriam Löwe"
+    },
+    {
+      "key": "team_p2_role",
+      "label": "Person 2 Rolle",
+      "type": "text",
+      "default": "Teamleitung"
+    },
+    {
+      "key": "team_p2_line",
+      "label": "Person 2 Text",
+      "type": "longtext",
+      "default": "Begleitet neue Mitarbeitende durch die Einarbeitung und beantwortet Fragen im Portal."
+    },
+    {
+      "key": "team_p3_name",
+      "label": "Person 3 Name",
+      "type": "text",
+      "default": "Deniz Arslan"
+    },
+    {
+      "key": "team_p3_role",
+      "label": "Person 3 Rolle",
+      "type": "text",
+      "default": "Qualitätsmanagement"
+    },
+    {
+      "key": "team_p3_line",
+      "label": "Person 3 Text",
+      "type": "longtext",
+      "default": "Entwickelt die Testabläufe und sorgt dafür, dass jede Aufgabe klar beschrieben ist."
+    },
+    {
+      "key": "team_p4_name",
+      "label": "Person 4 Name",
+      "type": "text",
+      "default": "Claudia Renner"
+    },
+    {
+      "key": "team_p4_role",
+      "label": "Person 4 Rolle",
+      "type": "text",
+      "default": "Personal & Onboarding"
+    },
+    {
+      "key": "team_p4_line",
+      "label": "Person 4 Text",
+      "type": "longtext",
+      "default": "Kümmert sich um Verträge, Gespräche und einen reibungslosen Start."
+    },
+    {
+      "key": "team_values_title",
+      "label": "Team: Werte-Titel",
+      "type": "text",
+      "default": "Worauf wir achten"
+    },
+    {
+      "key": "team_v1_t",
+      "label": "Wert 1 Titel",
+      "type": "text",
+      "default": "Ehrlichkeit"
+    },
+    {
+      "key": "team_v1_d",
+      "label": "Wert 1 Text",
+      "type": "longtext",
+      "default": "Wir sagen Ihnen vorab, welche Chancen realistisch sind – auch wenn die Antwort einmal „nein“ lautet."
+    },
+    {
+      "key": "team_v2_t",
+      "label": "Wert 2 Titel",
+      "type": "text",
+      "default": "Sicherheit"
+    },
+    {
+      "key": "team_v2_d",
+      "label": "Wert 2 Text",
+      "type": "longtext",
+      "default": "Feste Anstellung, pünktliche Bezahlung und voller Sozialversicherungsschutz – ohne Kleingedrucktes."
+    },
+    {
+      "key": "team_v3_t",
+      "label": "Wert 3 Titel",
+      "type": "text",
+      "default": "Verlässlichkeit"
+    },
+    {
+      "key": "team_v3_d",
+      "label": "Wert 3 Text",
+      "type": "longtext",
+      "default": "Zusagen halten wir ein – inklusive Rückmeldung innerhalb von 48 Stunden."
+    },
+    {
+      "key": "faq_title",
+      "label": "FAQ: Titel",
+      "type": "text",
+      "default": "Häufige Fragen"
+    },
+    {
+      "key": "faq_intro",
+      "label": "FAQ: Einführung",
+      "type": "longtext",
+      "default": "Die wichtigsten Antworten rund um Bewerbung, Arbeit im Homeoffice und Vergütung."
+    },
+    {
+      "key": "faq_q1",
+      "label": "Frage 1",
+      "type": "text",
+      "default": "Was genau mache ich bei Ihnen?"
+    },
+    {
+      "key": "faq_a1",
+      "label": "Antwort 1",
+      "type": "longtext",
+      "default": "Sie testen Apps, Webseiten und digitale Abläufe unserer Auftraggeber und dokumentieren Ihre Ergebnisse in kurzen Fragebögen."
+    },
+    {
+      "key": "faq_q2",
+      "label": "Frage 2",
+      "type": "text",
+      "default": "Wie läuft die Bewerbung ab?"
+    },
+    {
+      "key": "faq_a2",
+      "label": "Antwort 2",
+      "type": "longtext",
+      "default": "Über „Jetzt bewerben“ füllen Sie ein kurzes Formular aus. Danach folgt ein Kennenlerngespräch, anschließend unterschreiben Sie Ihren Vertrag digital."
+    },
+    {
+      "key": "faq_q3",
+      "label": "Frage 3",
+      "type": "text",
+      "default": "Brauche ich Vorerfahrung?"
+    },
+    {
+      "key": "faq_a3",
+      "label": "Antwort 3",
+      "type": "longtext",
+      "default": "Nein. Sie erhalten eine bezahlte Einarbeitung. Wichtig sind ein ruhiger Arbeitsplatz, Internet und Sorgfalt."
+    },
+    {
+      "key": "faq_q4",
+      "label": "Frage 4",
+      "type": "text",
+      "default": "Wie viel verdiene ich?"
+    },
+    {
+      "key": "faq_a4",
+      "label": "Antwort 4",
+      "type": "longtext",
+      "default": "Sie erhalten 19–21 € pro Stunde in Festanstellung – als Minijob, in Teilzeit oder Vollzeit."
+    },
+    {
+      "key": "faq_q5",
+      "label": "Frage 5",
+      "type": "text",
+      "default": "Wann arbeite ich?"
+    },
+    {
+      "key": "faq_a5",
+      "label": "Antwort 5",
+      "type": "longtext",
+      "default": "Sie teilen Ihre Zeit frei ein, an Werktagen zwischen 8 und 21 Uhr."
+    },
+    {
+      "key": "faq_q6",
+      "label": "Frage 6",
+      "type": "text",
+      "default": "Wer hilft mir bei Fragen?"
+    },
+    {
+      "key": "faq_a6",
+      "label": "Antwort 6",
+      "type": "longtext",
+      "default": "Ihr persönlicher Teamleiter ist im Mitarbeiter-Portal per Chat erreichbar."
+    },
+    {
+      "key": "kontakt_title",
+      "label": "Kontakt: Titel",
+      "type": "text",
+      "default": "Kontakt"
+    },
+    {
+      "key": "kontakt_intro",
+      "label": "Kontakt: Einführung",
+      "type": "longtext",
+      "default": "Sie erreichen uns per E-Mail oder telefonisch – oder bewerben Sie sich direkt online."
+    },
+    {
+      "key": "kontakt_image",
+      "label": "Kontakt: Bild",
+      "type": "image",
+      "default": "https://id-preview--9d4289b9-34d3-45dd-b827-b898ea736807.lovable.app/__l5e/assets-v1/aef6028c-1f16-4c5c-9635-bf0c6946bde0/kontakt.jpg"
+    },
+    {
+      "key": "kontakt_opening",
+      "label": "Kontakt: Öffnungszeiten",
+      "type": "longtext",
+      "default": "Mo – Fr: 08:00 – 21:00 Uhr"
+    },
+    {
+      "key": "kontakt_final_title",
+      "label": "Kontakt: Abschluss-CTA Titel",
+      "type": "text",
+      "default": "Starten Sie bei uns."
+    },
+    {
+      "key": "kontakt_final_text",
+      "label": "Kontakt: Abschluss-CTA Text",
+      "type": "longtext",
+      "default": "Bewerben Sie sich in zwei Minuten – wir melden uns persönlich bei Ihnen."
+    },
+    {
+      "key": "seo_title",
+      "label": "SEO: Titel",
+      "type": "text",
+      "default": "{{company_name}} — Arbeiten im Homeoffice mit nordischer Klarheit"
+    },
+    {
+      "key": "seo_description",
+      "label": "SEO: Beschreibung",
+      "type": "longtext",
+      "default": "Fest angestellt im Homeoffice: Apps und Webseiten testen, 19–21 €/h, freie Zeiten von 8 bis 21 Uhr, bezahlte Einarbeitung."
+    }
+  ]
+}
