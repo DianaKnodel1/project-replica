@@ -1,23 +1,17 @@
-# Passwort-Reset zuverlässig über Resend verschicken
+# Passwort-Reset-Mail nur über Resend mit einer festen Domain
 
-## Empfehlung zur Domain
-Kauf keine neue Domain. Nimm eine eigene Unteradresse deiner bestehenden Domain, z. B. `mail.mb-portal.com`, und hinterleg sie in Resend.
-- Mitarbeiter kennen den Namen schon. Eine neue Domain wirkt eher wie Spam und hat am Anfang keinen guten Ruf bei Postfächern.
-- Eine Unteradresse beeinflusst die bisherigen Mails von `mb-portal.com` nicht.
-- Absender wird dann z. B. `MB Portal <passwort@mail.mb-portal.com>`.
+## Domain
+Eine einzige feste Absender-Domain für alle Passwort-vergessen-Mails, z. B. `mail.mb-portal.com` (Unteradresse deiner bestehenden Domain – kein Neukauf nötig; eine neue Domain geht aber genauso).
+In Resend: **Domains → Add Domain** → DNS-Einträge beim Domain-Anbieter eintragen → warten bis „Verified“.
 
-Was du in Resend machst: **Domains → Add Domain → `mail.mb-portal.com`**. Danach trägst du die angezeigten DNS-Einträge bei deinem Domain-Anbieter ein und wartest auf „Verified“.
-
-## Was ich in der App ändere
-1. Die Passwort-Reset-Mail geht künftig zuerst über Resend. Der bisherige SMTP-Server springt nur ein, wenn Resend fehlschlägt.
-2. Der Absender wird fest auf die Resend-Domain gesetzt und hängt nicht mehr vom SMTP der Firma ab. Das ist im Moment die häufigste Ursache, wenn Reset-Mails nicht ankommen.
-3. Die Mail behält das bestehende Design und die Signatur.
-4. Im Postfach und Mail-Log siehst du, ob die Reset-Mail über Resend oder SMTP verschickt wurde.
-5. Auf der Login-Seite steht nach „Passwort vergessen“ immer eine klare Bestätigung. Fehler werden nicht mehr verschluckt.
-6. Notlösung für Admins: In der Mitarbeiterliste gibt es den Knopf „Reset-Link kopieren“. Damit kannst du einem Mitarbeiter den Link auch direkt schicken, z. B. per SMS oder WhatsApp.
+## Was ich ändere
+1. Die Passwort-vergessen-Mail geht ausschließlich über Resend – kein SMTP mehr, keine Firmen-Einstellungen nötig.
+2. Fester Absender, z. B. `MB Portal <passwort@mail.mb-portal.com>`, für alle Mitarbeiter gleich.
+3. Bestehendes Mail-Design bleibt.
+4. „Passwort vergessen“ zeigt immer eine klare Bestätigung; Versandfehler werden protokolliert und im Admin sichtbar.
+5. Notlösung: Admin-Knopf „Reset-Link kopieren“ in der Mitarbeiterliste, um den Link direkt (SMS/WhatsApp) zu schicken.
 
 ## Technische Details
-- `supabase/functions/send-password-reset/index.ts`: Resend wird zuerst versucht, SMTP danach als Ausweichweg. Der Link wird wie bisher über `auth.admin.generateLink({type:"recovery"})` erzeugt, gerendert über `src/lib/mail-template.ts`-Logik. Bestehende Elemente wie Send-Guard und Claim-Dedupe bleiben erhalten.
-- Neue Function-Secrets auf dem eigenen Server: `RESEND_API_KEY` (falls nicht schon gesetzt, auch für Lead-Mailing nutzbar) und `PASSWORD_RESET_FROM` (z. B. `MB Portal <passwort@mail.mb-portal.com>`). Das Deployment läuft über das bestehende `scripts/deploy-edge-function.sh`.
-- Admin-Server-Funktion „Reset-Link erzeugen“: nur für die Admin-Rolle, wird geprüft über `requireSupabaseAuth` und die Rolle.
-- Hinweis: Edge Functions laufen auf deinem eigenen Server (api.mb-portal.com). Deshalb musst du nach meiner Änderung einmal das Deploy-Skript ausführen.
+- `supabase/functions/send-password-reset/index.ts`: SMTP-Transport und Tenant-SMTP-Auflösung entfernen; Versand per `POST https://api.resend.com/emails` mit `RESEND_API_KEY`, Absender aus `PASSWORD_RESET_FROM`. Link weiter über `auth.admin.generateLink({type:"recovery"})`; Send-Guard und Claim-Dedupe bleiben.
+- Secrets auf dem eigenen Server (api.mb-portal.com): `RESEND_API_KEY`, `PASSWORD_RESET_FROM`. Danach einmal `scripts/deploy-edge-function.sh send-password-reset` ausführen.
+- Admin-Server-Funktion „Reset-Link erzeugen“: nur mit Admin-Rolle (`requireSupabaseAuth` + Rollenprüfung).
