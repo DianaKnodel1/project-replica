@@ -64,6 +64,29 @@ function LoginPage() {
   }, []);
 
 
+  const [resetBusy, setResetBusy] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const handleForgot = async () => {
+    const mail = email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+      setAuthError("Bitte gib oben zuerst deine E-Mail-Adresse ein.");
+      return;
+    }
+    setAuthError(null);
+    setResetBusy(true);
+    try {
+      const { error } = await supabase.functions.invoke("send-password-reset", {
+        body: { email: mail, host: window.location.hostname },
+      });
+      if (error) throw error;
+      setResetSent(true);
+    } catch {
+      setAuthError("Die Mail konnte gerade nicht verschickt werden. Bitte versuch es gleich nochmal oder schreib uns.");
+    } finally {
+      setResetBusy(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -269,10 +292,21 @@ function LoginPage() {
         </Button>
       </form>
 
+      <div className="text-center">
+        {resetSent ? (
+          <p className="text-sm text-muted-foreground" role="status">
+            Falls ein Konto mit dieser E-Mail existiert, haben wir dir gerade einen Link zum Zurücksetzen geschickt. Schau auch im Spam-Ordner nach.
+          </p>
+        ) : (
+          <button type="button" onClick={handleForgot} disabled={resetBusy} className="text-sm font-medium text-primary underline-offset-4 hover:underline">
+            <span>{resetBusy ? "Wird gesendet…" : "Passwort vergessen?"}</span>
+          </button>
+        )}
+      </div>
+
       <div className="rounded-lg border border-border/60 bg-muted/30 px-4 py-3 space-y-2">
         <p className="text-xs text-muted-foreground">
-          Probleme beim Anmelden oder Passwort vergessen? Da unser eigener Mailversand deaktiviert
-          ist, kommt keine automatische E-Mail — schreib uns einfach direkt:
+          Keine Mail bekommen oder andere Probleme beim Anmelden? Schreib uns einfach direkt:
         </p>
         <div className="flex flex-wrap gap-2">
           {whatsapp.enabled && whatsapp.href && (

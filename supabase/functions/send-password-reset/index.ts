@@ -1,6 +1,7 @@
 // Deno Edge Function: send-password-reset
 //
-// Sendet Passwort-Reset-Mails über den TENANT-EIGENEN SMTP (nicht Supabase-Auth-SMTP).
+// Sendet Passwort-Reset-Mails ausschließlich über Resend mit fester Absender-Domain.
+// Benötigte Function-Secrets: RESEND_API_KEY, PASSWORD_RESET_FROM ("Name <adresse@domain>").
 // Der Reset-Link wird per `supabase.auth.admin.generateLink({ type: "recovery" })`
 // erzeugt und in das Tenant-Template eingebettet. Keine User-Enumeration:
 // Antwort ist immer { ok: true }, egal ob die Mail existiert.
@@ -10,7 +11,6 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-import { createSmtpTransport, sendMailWithRetry } from "../_shared/smtp.ts";
 import { guardSend } from "../_shared/send-guard.ts";
 import { logMailAbort } from "../_shared/log-abort.ts";
 import { actionBucketEventKey, claimEmailEvent, finishEmailClaim } from "../_shared/send-claim.ts";
@@ -195,10 +195,12 @@ serve(async (req) => {
       }
     } catch {}
 
-    // SMTP-Check: ohne vollständige Tenant-SMTP-Konfiguration NICHT versenden.
-    if (!tenant.smtp_host || !tenant.smtp_port || !tenant.smtp_username || !tenant.smtp_password || !tenant.sender_email) {
-      await logEmail(admin, tenant, email, "(Passwort-Reset)", null, "failed", "SMTP nicht konfiguriert");
-      return new Response(JSON.stringify({ ok: true, warn: "smtp_missing" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    // Versand ausschließlich über Resend mit fester Absender-Domain.
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    const fromHeader = Deno.env.get("PASSWORD_RESET_FROM");
+    if (!resendKey || !fromHeader) {
+      await logEmail(admin, tenant, email, "(Passwort-Reset)", null, "failed", "RESEND_API_KEY oder PASSWORD_RESET_FROM fehlt");
+      return new Response(JSON.stringify({ ok: true, warn: "resend_missing" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     const subjectTpl = tenant.reset_email_subject || DEFAULT_SUBJECT;
@@ -219,13 +221,7 @@ serve(async (req) => {
     if (!/<[a-z][\s\S]*>/i.test(inner)) inner = inner.replace(/\n/g, "<br/>");
     const html = await shellHtml(tenant, inner, email);
 
-    // Versand mit gezielter Wiederholung bei Verbindungsfehlern (kein Doppelversand).
-    const transporter = {
-      sendMail: (message: Record<string, unknown>) => sendMailWithRetry(tenant as any, message, { label: "send-password-reset" }),
-      verify: () => createSmtpTransport(tenant as any).verify(),
-    };
-    const senderName = tenant.sender_name ?? tenant.name;
-    const senderEmail = tenant.sender_email;
+    const senderEmail = (fromHeader.match(/<([^>]+)>/)?.[1] ?? fromHeader).trim();
     // Kontingent-Schutz (150/h, 2.400/Tag) + Log der Blockade als "skipped".
     const allowance = await guardSend({
       admin, tenantId: tenant.id ?? null, templateName: "password_reset",
@@ -248,21 +244,25 @@ serve(async (req) => {
     }
 
     try {
-      const verifyRes = await verifyOrPause(admin, tenant, transporter);
-      if (!verifyRes.ok) {
-        await finishEmailClaim(admin, claim, { status: "failed", error: `verify_failed: ${verifyRes.reason}${verifyRes.paused ? " (tenant auto-paused)" : ""}`, metadata: { source: "send-password-reset", user_initiated: true } });
-      } else {
-        await transporter.sendMail({
-          from: `"${senderName}" <${senderEmail}>`,
-          to: email,
-          replyTo: tenant.reply_to_email ?? senderEmail,
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: fromHeader,
+          to: [email],
+          ...(tenant.reply_to_email ? { reply_to: tenant.reply_to_email } : {}),
           subject,
           html,
-        });
-        await finishEmailClaim(admin, claim, { status: "sent", metadata: { source: "send-password-reset", user_initiated: true } });
+        }),
+      });
+      const resBody = await res.text();
+      if (!res.ok) {
+        await finishEmailClaim(admin, claim, { status: "failed", error: `resend ${res.status}: ${resBody.slice(0, 300)}`, metadata: { source: "send-password-reset", provider: "resend", user_initiated: true } });
+      } else {
+        await finishEmailClaim(admin, claim, { status: "sent", metadata: { source: "send-password-reset", provider: "resend", user_initiated: true } });
       }
     } catch (err: any) {
-      console.error("send-password-reset SMTP failed", err);
+      console.error("send-password-reset Resend failed", err);
       await finishEmailClaim(admin, claim, { status: "failed", error: String(err?.message ?? err), metadata: { source: "send-password-reset", user_initiated: true } });
       // dennoch ok zurückgeben, um keine Enumeration zu ermöglichen
     }
