@@ -1,0 +1,50 @@
+{
+  "id": "site-18",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "G·A·B· Management (gab-management.com)",
+  "description": "Feste Firmen-Website für gab-management.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "G.A.B. Management GmbH",
+      "seo_title": "G.A.B. Management GmbH – Strategie, Beteiligungen, Handel",
+      "seo_description": "Unternehmensberatung, strategisches Management und Unternehmensbeteiligungen aus Bruchköbel bei Hanau. Seit 2012."
+    },
+    {
+      "id": "kontakt",
+      "slug": "kontakt",
+      "title": "Kontakt",
+      "seo_title": "Kontakt – G.A.B. Management GmbH",
+      "seo_description": "Kontakt zur G.A.B. Management GmbH in Bruchköbel."
+    },
+    {
+      "id": "leistungen",
+      "slug": "leistungen",
+      "title": "Leistungen",
+      "seo_title": "Leistungen – G.A.B. Management GmbH",
+      "seo_description": "Strategieberatung, Unternehmensbeteiligungen und Handel mit IT, Fahrzeugen und Maschinen."
+    },
+    {
+      "id": "unternehmen",
+      "slug": "unternehmen",
+      "title": "Unternehmen",
+      "seo_title": "Unternehmen – G.A.B. Management GmbH",
+      "seo_description": "Seit 2012 im Main-Kinzig-Kreis: Geschichte und Geschäftsführung der G.A.B. Management GmbH."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_hero",
+      "label": "Bild: hero.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/hero.jpg"
+    }
+  ]
+}

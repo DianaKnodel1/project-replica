@@ -1,0 +1,57 @@
+{
+  "id": "site-20",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "ISI Management Group (isi-softsolutions.com)",
+  "description": "Feste Firmen-Website für isi-softsolutions.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "ISI Management GmbH",
+      "seo_title": "ISI Management GmbH – Intelligent Software aus Lindau",
+      "seo_description": "Individuelle Software- und Hardwareentwicklung, Betrieb und IT-Beratung aus Schleswig-Holstein."
+    },
+    {
+      "id": "karriere",
+      "slug": "karriere",
+      "title": "Karriere: Kundenberater (m/w/d)",
+      "seo_title": "Karriere: Kundenberater (m/w/d) – ISI Management GmbH",
+      "seo_description": "Bewerben Sie sich als Kundenberater (m/w/d) bei der ISI Management GmbH – direkt online."
+    },
+    {
+      "id": "kontakt",
+      "slug": "kontakt",
+      "title": "Kontakt",
+      "seo_title": "Kontakt – ISI Management GmbH",
+      "seo_description": "Kontaktieren Sie die ISI Management GmbH in Lindau für Ihr Software-Projekt."
+    },
+    {
+      "id": "leistungen",
+      "slug": "leistungen",
+      "title": "Leistungen",
+      "seo_title": "Leistungen – ISI Management GmbH",
+      "seo_description": "Softwareentwicklung, Hardwareentwicklung, Betrieb, Vermarktung und IT-Beratung."
+    },
+    {
+      "id": "ueber_uns",
+      "slug": "ueber-uns",
+      "title": "Über uns",
+      "seo_title": "Über uns – ISI Management GmbH",
+      "seo_description": "Seit 2022 entwickelt die ISI Management GmbH aus Lindau intelligente Software."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_hero",
+      "label": "Bild: hero.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/hero.jpg"
+    }
+  ]
+}

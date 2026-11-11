@@ -1,0 +1,36 @@
+{
+  "id": "site-22",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "HD Agentur (hd-agentur.com)",
+  "description": "Feste Firmen-Website für hd-agentur.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "HD Agentur Worms",
+      "seo_title": "HD Agentur Worms – Telekommunikation & erneuerbare Energien",
+      "seo_description": "Unabhängige Beratung und Vermittlung für Internet, Mobilfunk, Photovoltaik und Ökostrom in Worms und Umgebung."
+    },
+    {
+      "id": "bewerben",
+      "slug": "bewerben",
+      "title": "Karriere",
+      "seo_title": "Karriere – Mitarbeiter im Kundenmanagement (m/w/d) | HD Agentur Worms",
+      "seo_description": "Jetzt bewerben als Mitarbeiter im Kundenmanagement (m/w/d) bei der HD Agentur in Worms – schnell und einfach online."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_hero",
+      "label": "Bild: hero.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/hero.jpg"
+    }
+  ]
+}

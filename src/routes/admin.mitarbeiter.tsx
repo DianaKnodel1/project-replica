@@ -19,7 +19,6 @@ import { STATUS_CONFIG, ONBOARDING_STATUS_CONFIG, type EmployeeStatus } from "@/
 import { StageTimeline, type Stage } from "@/components/StageTimeline";
 import { toast } from "sonner";
 import { purgeInactivePeople, deleteEmployeeAccount, bulkDeleteEmployees } from "@/lib/admin-delete.functions";
-import { createPasswordResetLink } from "@/lib/password-reset-link.functions";
 import { createEmployeeAccount } from "@/lib/admin-employees.functions";
 import { useServerFn } from "@tanstack/react-start";
 import { Mail } from "lucide-react";
@@ -416,7 +415,6 @@ function AdminMitarbeiterPage() {
                             <Button variant="ghost" size="sm" onClick={() => setMailUserId(r.id)} className="h-7 gap-1 text-xs" title="E-Mail senden">
                               <Mail className="h-3 w-3" /> E-Mail
                             </Button>
-                            <ResetLinkButton userId={r.id} />
                             <DeleteEmployeeButton userId={r.id} name={r.name} onDeleted={loadData} />
                           </div>
                         </td>
@@ -503,28 +501,6 @@ function PurgeButton() {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
-}
-
-function ResetLinkButton({ userId }: { userId: string }) {
-  const [busy, setBusy] = useState(false);
-  const run = useServerFn(createPasswordResetLink);
-  async function go() {
-    setBusy(true);
-    try {
-      const { url } = await run({ data: { user_id: userId, origin: window.location.origin } });
-      await navigator.clipboard.writeText(url);
-      toast.success("Reset-Link kopiert – jetzt z. B. per WhatsApp schicken.");
-    } catch (e: any) {
-      toast.error(e?.message ?? "Link konnte nicht erzeugt werden");
-    } finally {
-      setBusy(false);
-    }
-  }
-  return (
-    <Button variant="ghost" size="sm" onClick={go} disabled={busy} className="h-7 gap-1 text-xs" title="Passwort-Reset-Link kopieren">
-      <Lock className="h-3 w-3" /> {busy ? "…" : "Reset-Link"}
-    </Button>
   );
 }
 

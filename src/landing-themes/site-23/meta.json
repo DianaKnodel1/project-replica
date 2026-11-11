@@ -1,0 +1,64 @@
+{
+  "id": "site-23",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "WV Management Digital (wvdigital-gmbh.com)",
+  "description": "Feste Firmen-Website für wvdigital-gmbh.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "WV Management",
+      "seo_title": "WV Management – Unternehmensberatung am Bodensee",
+      "seo_description": "Unabhängige Unternehmensberatung aus Überlingen: Strategie, Organisation, Nachfolge und Finanzen für Inhaber und Familienunternehmen."
+    },
+    {
+      "id": "bewerben",
+      "slug": "bewerben",
+      "title": "Bewerben",
+      "seo_title": "Bewerben – WV Management, Überlingen",
+      "seo_description": "Bewerben Sie sich bei WV Management, Unternehmensberatung in Überlingen am Bodensee."
+    },
+    {
+      "id": "kontakt",
+      "slug": "kontakt",
+      "title": "Kontakt",
+      "seo_title": "Kontakt – WV Management, Überlingen",
+      "seo_description": "Vereinbaren Sie ein vertrauliches Erstgespräch mit WV Management, Unternehmensberatung in Überlingen am Bodensee."
+    },
+    {
+      "id": "leistungen",
+      "slug": "leistungen",
+      "title": "Leistungen",
+      "seo_title": "Leistungen – WV Management Unternehmensberatung",
+      "seo_description": "Strategie, Organisation, Unternehmensnachfolge, Finanzen und Interim-Management – Beratung aus Überlingen am Bodensee."
+    },
+    {
+      "id": "ueber_uns",
+      "slug": "ueber-uns",
+      "title": "Über uns",
+      "seo_title": "Über uns – WV Management, Überlingen",
+      "seo_description": "Unabhängig, diskret, langfristig: die Haltung hinter WV Management, Unternehmensberatung am Bodensee."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_hero_bodensee",
+      "label": "Bild: hero-bodensee.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/hero-bodensee.jpg"
+    },
+    {
+      "key": "img_beratung_raum",
+      "label": "Bild: beratung-raum.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/beratung-raum.jpg"
+    }
+  ]
+}

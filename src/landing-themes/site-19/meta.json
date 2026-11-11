@@ -1,0 +1,29 @@
+{
+  "id": "site-19",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "SZP Management (szp-gmbh.com)",
+  "description": "Feste Firmen-Website für szp-gmbh.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "SZP GmbH",
+      "seo_title": "SZP GmbH – Beteiligungen & Beratung, Mittweida",
+      "seo_description": "Beteiligungsmanagement sowie Unternehmens- und Technologieberatung aus Mittweida, Sachsen."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_architecture",
+      "label": "Bild: architecture.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/architecture.jpg"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "site-17",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "DME-Management (dme-managment.com)",
+  "description": "Feste Firmen-Website für dme-managment.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "DME-Management GmbH",
+      "seo_title": "DME-Management GmbH – Bauservice aus Bad Rodach",
+      "seo_description": "Service und Vermittlung für Bau- und Baunebengewerbe, Baustoffhandel und Transport – für Unternehmen und Privatkunden."
+    },
+    {
+      "id": "karriere",
+      "slug": "karriere",
+      "title": "Jobs: Kundensupport (m/w/d)",
+      "seo_title": "Jobs: Kundensupport (m/w/d) – DME-Management GmbH",
+      "seo_description": "Jetzt bewerben: Kundensupport (m/w/d) bei DME-Management GmbH in Bad Rodach."
+    },
+    {
+      "id": "kontakt",
+      "slug": "kontakt",
+      "title": "Kontakt",
+      "seo_title": "Kontakt – DME-Management GmbH",
+      "seo_description": "Kontaktieren Sie DME-Management GmbH in Bad Rodach für Bauservice, Baustoffe und Transport."
+    },
+    {
+      "id": "leistungen",
+      "slug": "leistungen",
+      "title": "Leistungen",
+      "seo_title": "Leistungen – DME-Management GmbH",
+      "seo_description": "Vermittlung und Service für das Bau- und Baunebengewerbe, Baustoffhandel, Transport und Service für Privatkunden."
+    },
+    {
+      "id": "ueber_uns",
+      "slug": "ueber-uns",
+      "title": "Über uns",
+      "seo_title": "Über uns – DME-Management GmbH",
+      "seo_description": "Seit 2020 Ihr Partner für Bauservice, Baustoffe und Transport – heute mit Sitz in Bad Rodach."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_hero",
+      "label": "Bild: hero.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/hero.jpg"
+    },
+    {
+      "key": "img_baustoffe",
+      "label": "Bild: baustoffe.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/baustoffe.jpg"
+    },
+    {
+      "key": "img_transport",
+      "label": "Bild: transport.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/transport.jpg"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "id": "site-25",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "BST Management (bst-beratung.com)",
+  "description": "Feste Firmen-Website für bst-beratung.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "BST Management GmbH",
+      "seo_title": "BST Management GmbH – Beteiligungen, Management & Immobilien | Worms",
+      "seo_description": "BST Management GmbH aus Worms: Beteiligungsmanagement, Managementleistungen, Projektentwicklung und Immobilien aus einer Hand."
+    },
+    {
+      "id": "bewerbung",
+      "slug": "bewerbung",
+      "title": "Bewerben",
+      "seo_title": "Bewerben – BST Management GmbH",
+      "seo_description": "Bewerben Sie sich bei der BST Management GmbH in Worms – gezielt oder initiativ."
+    },
+    {
+      "id": "kontakt",
+      "slug": "kontakt",
+      "title": "Kontakt",
+      "seo_title": "Kontakt – BST Management GmbH",
+      "seo_description": "Kontakt zur BST Management GmbH, Herrngasse 9, 67549 Worms."
+    },
+    {
+      "id": "leistungen",
+      "slug": "leistungen",
+      "title": "Leistungen",
+      "seo_title": "Leistungen – BST Management GmbH",
+      "seo_description": "Beteiligungsmanagement, Management & Beratung, Projektentwicklung, Immobilien sowie Organisation & IT."
+    },
+    {
+      "id": "unternehmen",
+      "slug": "unternehmen",
+      "title": "Unternehmen",
+      "seo_title": "Unternehmen – BST Management GmbH",
+      "seo_description": "Die BST Management GmbH ist eine inhabergeführte Management-Holding mit Sitz in Worms, gegründet 2019."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_hero",
+      "label": "Bild: hero.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/hero.jpg"
+    }
+  ]
+}

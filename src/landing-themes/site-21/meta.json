@@ -1,0 +1,64 @@
+{
+  "id": "site-21",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "FTS Management Berlin (fts-beratung.com)",
+  "description": "Feste Firmen-Website für fts-beratung.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "FTS Management GmbH",
+      "seo_title": "FTS Management GmbH – Beratung, Immobilien & Finanzierung in Berlin",
+      "seo_description": "Unabhängige Unternehmensberatung, Immobilienvermittlung und -verwaltung sowie Finanzierungsvermittlung aus Berlin."
+    },
+    {
+      "id": "bewerben",
+      "slug": "bewerben",
+      "title": "Karriere: Sachbearbeiter (m/w/d)",
+      "seo_title": "Karriere: Sachbearbeiter (m/w/d) – FTS Management GmbH",
+      "seo_description": "Jetzt bewerben als Sachbearbeiter (m/w/d) bei FTS Management GmbH in Berlin."
+    },
+    {
+      "id": "kontakt",
+      "slug": "kontakt",
+      "title": "Kontakt",
+      "seo_title": "Kontakt – FTS Management GmbH",
+      "seo_description": "Kontaktieren Sie FTS Management GmbH, Otto-Weidt-Platz 12, 10557 Berlin."
+    },
+    {
+      "id": "leistungen",
+      "slug": "leistungen",
+      "title": "Leistungen",
+      "seo_title": "Leistungen – FTS Management GmbH",
+      "seo_description": "Unternehmensberatung, Immobilienvermittlung und -verwaltung sowie Finanzierungsvermittlung in Berlin."
+    },
+    {
+      "id": "ueber_uns",
+      "slug": "ueber-uns",
+      "title": "Über uns",
+      "seo_title": "Über uns – FTS Management GmbH",
+      "seo_description": "Philosophie, Werte und Geschäftsführung der FTS Management GmbH in Berlin."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_hero_berlin",
+      "label": "Bild: hero-berlin.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/hero-berlin.jpg"
+    },
+    {
+      "key": "img_meeting",
+      "label": "Bild: meeting.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/meeting.jpg"
+    }
+  ]
+}

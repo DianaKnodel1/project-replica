@@ -1,0 +1,71 @@
+{
+  "id": "site-24",
+  "kind": "site",
+  "standard": "premium-theme-v1",
+  "name": "MD Management (md-mgmtgmbh.com)",
+  "description": "Feste Firmen-Website für md-mgmtgmbh.com, 1:1 übernommen.",
+  "colors": {
+    "primary": "#1f2937",
+    "secondary": "#64748b"
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "title": "MD Management GmbH",
+      "seo_title": "MD Management GmbH – Energie, Land & Technik aus Zeven",
+      "seo_description": "Die MD Management GmbH bündelt Photovoltaik, Landmaschinenhandel sowie Elektro- und Telekommunikationstechnik unter einem Dach."
+    },
+    {
+      "id": "bewerbung",
+      "slug": "bewerbung",
+      "title": "Karriere & Bewerbung",
+      "seo_title": "Karriere & Bewerbung – MD Management GmbH",
+      "seo_description": "Bewerben Sie sich bei der MD Gruppe in Zeven: Photovoltaik, Landtechnik, Elektro & Telekommunikation."
+    },
+    {
+      "id": "geschaeftsfelder",
+      "slug": "geschaeftsfelder",
+      "title": "Geschäftsfelder",
+      "seo_title": "Geschäftsfelder – MD Management GmbH",
+      "seo_description": "Photovoltaik, Landmaschinenhandel sowie Elektro- und Telekommunikationstechnik: die Geschäftsfelder der MD Management Gruppe."
+    },
+    {
+      "id": "gruppe",
+      "slug": "gruppe",
+      "title": "Unternehmensgruppe",
+      "seo_title": "Unternehmensgruppe – MD Management GmbH",
+      "seo_description": "Struktur, Werte und Entwicklung der MD Management Gruppe aus Zeven."
+    },
+    {
+      "id": "kontakt",
+      "slug": "kontakt",
+      "title": "Kontakt",
+      "seo_title": "Kontakt – MD Management GmbH",
+      "seo_description": "Kontakt zur MD Management GmbH, Poststr. 10-12, 27404 Zeven."
+    }
+  ],
+  "slots": [
+    {
+      "key": "img_hero_solar",
+      "label": "Bild: hero-solar.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/hero-solar.jpg"
+    },
+    {
+      "key": "img_agri",
+      "label": "Bild: agri.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/agri.jpg"
+    },
+    {
+      "key": "img_electro",
+      "label": "Bild: electro.jpg",
+      "type": "image",
+      "group": "Bilder",
+      "default": "assets/img/electro.jpg"
+    }
+  ]
+}
