@@ -20,7 +20,7 @@ Für jede Simulationsdomain einen A-Record auf die IP des WebID-Servers setzen.
 ```bash
 ssh root@<WEBID-SERVER-IP>
 apt-get update && apt-get install -y git curl
-git clone https://github.com/DianaKnodel1/exactly-as-zipped.git /opt/src/portal
+git clone https://github.com/DianaKnodel1/project-replica.git /opt/src/portal
 cd /opt/src/portal/webid-sim-server
 
 SUPABASE_URL=https://<backend-host> \
@@ -59,7 +59,7 @@ ssh root@<BOT-SERVER-IP>
 apt-get update && apt-get install -y git curl unzip
 curl -fsSL https://bun.sh/install | bash && ln -sf /root/.bun/bin/bun /usr/local/bin/bun
 
-git clone https://github.com/DianaKnodel1/exactly-as-zipped.git /opt/apps/portal
+git clone https://github.com/DianaKnodel1/project-replica.git /opt/apps/portal
 cd /opt/apps/portal
 
 cat > /opt/apps/portal/.env.server <<'EOF'
@@ -90,7 +90,7 @@ Proxys im Portal unter `/admin/bots` hinterlegen und dort mit „Proxy testen" p
 ### 2.4 Updates
 ```bash
 cd /opt/apps/portal
-git remote set-url origin https://github.com/DianaKnodel1/exactly-as-zipped.git
+git remote set-url origin https://github.com/DianaKnodel1/project-replica.git
 git pull && bash scripts/setup-bot-runner.sh
 ```
 

@@ -32,7 +32,7 @@ möglichst anderer Anbieter als Frontend/Backend.
 ### 1. Code holen
 ```bash
 apt update && apt install -y git
-git clone https://github.com/DianaKnodel1/upload-helper.git /opt/apps/portal
+git clone https://github.com/DianaKnodel1/project-replica.git /opt/apps/portal
 cd /opt/apps/portal
 ```
 
@@ -104,7 +104,7 @@ scp /var/backups/portal/daily/<archiv>{,.sha256} root@<NEU-FRONTEND>:/root/
 ```bash
 apt update && apt install -y git age postgresql-client
 curl -fsSL https://get.docker.com | sh
-git clone https://github.com/DianaKnodel1/upload-helper.git /opt/apps/portal
+git clone https://github.com/DianaKnodel1/project-replica.git /opt/apps/portal
 cd /opt/apps/portal
 bash scripts/restore.sh backend /root/<archiv>
 ```
@@ -116,7 +116,7 @@ Bewerbungen und Logins — mit den Zahlen „laut Backup“ vergleichen.
 ### 4. Neuer Frontend-Server
 ```bash
 apt update && apt install -y git age
-git clone https://github.com/DianaKnodel1/upload-helper.git /opt/apps/portal
+git clone https://github.com/DianaKnodel1/project-replica.git /opt/apps/portal
 cd /opt/apps/portal
 bash scripts/setup-server2.sh          # Node/Bun, Grundeinrichtung
 bash scripts/restore.sh frontend /root/<archiv>

@@ -45,7 +45,7 @@ Voraussetzung: SSH-Zugang per Schlüssel funktioniert (sonst zuerst
 
 ```bash
 apt-get update && apt-get install -y git rsync
-git clone https://github.com/DianaKnodel1/direct-zip-import.git /opt/src/portal   # falls noch nicht vorhanden
+git clone https://github.com/DianaKnodel1/project-replica.git /opt/src/portal   # falls noch nicht vorhanden
 
 # 1) Caddy auf Cloudflare-Betrieb umstellen (lokale CA, keine Zertifikatspflege)
 cp /opt/src/portal/landing-server/Caddyfile.cloudflare /etc/caddy/Caddyfile

@@ -40,7 +40,7 @@ im Repo.
 
 2. Auf dem Backup-Server:
    ```bash
-   git clone https://github.com/DianaKnodel1/direct-zip-import.git /opt/apps/portal
+   git clone https://github.com/DianaKnodel1/project-replica.git /opt/apps/portal
    cd /opt/apps/portal
    bash scripts/setup-backup-server.sh
    ```
@@ -107,7 +107,7 @@ im Repo.
    brechen alle Sessions und der Mailversand.
 2. Repo klonen:
    ```bash
-   git clone https://github.com/DianaKnodel1/direct-zip-import.git /opt/apps/portal
+   git clone https://github.com/DianaKnodel1/project-replica.git /opt/apps/portal
    ```
 3. Restore aus dem Archiv:
    ```bash
@@ -127,7 +127,7 @@ im Repo.
 ## Phase 3 — Neuen Portal-Server aufbauen
 
 ```bash
-git clone https://github.com/DianaKnodel1/direct-zip-import.git /opt/apps/portal
+git clone https://github.com/DianaKnodel1/project-replica.git /opt/apps/portal
 cd /opt/apps/portal
 bash scripts/setup-server2.sh
 ```
