@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
-// Kontaktformular der Firmen-Websites → Admin-Postfach (lead_messages, kind "lead").
+// Kontaktformular der Firmen-Websites → Admin-Postfach (lead_messages, kind "contact").
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -77,7 +77,7 @@ export const Route = createFileRoute("/api/public/contact")({
             from_email: email,
             to_email: null,
             peer_email: email,
-            kind: "lead",
+            kind: "contact",
             handled: false,
             tenant_id: tenantId,
             subject: `Kontaktanfrage über ${host || "Website"} – ${d.name}`,

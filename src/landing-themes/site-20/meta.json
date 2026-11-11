@@ -43,6 +43,20 @@
       "title": "Über uns",
       "seo_title": "Über uns – ISI Management GmbH",
       "seo_description": "Seit 2022 entwickelt die ISI Management GmbH aus Lindau intelligente Software."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – ISI Management GmbH",
+      "seo_description": "Impressum und Anbieterkennzeichnung der ISI Management GmbH."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutz",
+      "seo_title": "Datenschutz – ISI Management GmbH",
+      "seo_description": "Datenschutzerklärung der ISI Management GmbH."
     }
   ],
   "slots": [
@@ -52,6 +66,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/hero.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"bg-deep text-deep-foreground\"><div class=\"mx-auto max-w-6xl px-6 py-20\"><p class=\"text-sm font-semibold uppercase tracking-widest text-accent\">Rechtliches</p><h1 class=\"mt-3 max-w-3xl text-4xl font-bold md:text-5xl\">Impressum</h1><p class=\"mt-5 max-w-2xl text-lg opacity-75\">Angaben gemäß § 5 DDG</p></div></section><section class=\"mx-auto max-w-3xl space-y-6 px-6 py-16 text-muted-foreground\"><p><strong class=\"text-foreground\">ISI Management GmbH</strong><br/>An der Hülkenbek 3<br/>24214 Lindau</p><p><strong class=\"text-foreground\">Vertreten durch den Geschäftsführer:</strong><br/>Ron Conrad</p><p><strong class=\"text-foreground\">Registereintrag:</strong><br/>Amtsgericht Kiel, HRB 24768 KI</p><p><strong class=\"text-foreground\">Kontakt:</strong><br/>E-Mail: <a class=\"underline\" href=\"mailto:info@isi-softsolutions.com\">info@isi-softsolutions.com</a><br/>Telefon: <a class=\"underline\" href=\"tel:+4917616149938\">+49 176 16149938</a><br/>Web: isi-softsolutions.com</p><p><strong class=\"text-foreground\">Umsatzsteuer-ID:</strong><br/>wird ergänzt</p></section>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"bg-deep text-deep-foreground\"><div class=\"mx-auto max-w-6xl px-6 py-20\"><p class=\"text-sm font-semibold uppercase tracking-widest text-accent\">Rechtliches</p><h1 class=\"mt-3 max-w-3xl text-4xl font-bold md:text-5xl\">Datenschutzerklärung</h1><p class=\"mt-5 max-w-2xl text-lg opacity-75\">Informationen zur Verarbeitung Ihrer personenbezogenen Daten.</p></div></section><section class=\"mx-auto max-w-3xl space-y-8 px-6 py-16 text-muted-foreground\"><div><h2 class=\"text-xl font-semibold text-foreground\">1. Verantwortlicher</h2><p class=\"mt-2\">ISI Management GmbH, An der Hülkenbek 3, 24214 Lindau, vertreten durch Ron Conrad.</p></div><div><h2 class=\"text-xl font-semibold text-foreground\">2. Server-Logfiles</h2><p class=\"mt-2\">Beim Aufruf dieser Website werden technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, Browser) verarbeitet, um den Betrieb sicherzustellen (Art. 6 Abs. 1 lit. f DSGVO).</p></div><div><h2 class=\"text-xl font-semibold text-foreground\">3. Kontaktaufnahme</h2><p class=\"mt-2\">Wenn Sie uns kontaktieren, verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO).</p></div><div><h2 class=\"text-xl font-semibold text-foreground\">4. Ihre Rechte</h2><p class=\"mt-2\">Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie ein Beschwerderecht bei einer Aufsichtsbehörde.</p></div><div><h2 class=\"text-xl font-semibold text-foreground\">5. Hosting</h2><p class=\"mt-2\">Diese Website wird bei einem externen Dienstleister gehostet. Die beim Aufruf anfallenden Daten werden auf dessen Servern verarbeitet (Art. 6 Abs. 1 lit. f DSGVO).</p></div><div><h2 class=\"text-xl font-semibold text-foreground\">6. Schriftarten</h2><p class=\"mt-2\">Die verwendeten Schriftarten werden lokal von unserem Server geladen. Es findet keine Verbindung zu Servern von Google statt.</p></div><div><h2 class=\"text-xl font-semibold text-foreground\">7. Bewerbungen</h2><p class=\"mt-2\">Bewerberdaten verarbeiten wir ausschließlich zur Durchführung des Bewerbungsverfahrens (§ 26 BDSG, Art. 6 Abs. 1 lit. b DSGVO) und löschen sie spätestens sechs Monate nach Abschluss des Verfahrens, sofern keine Einwilligung zur längeren Speicherung vorliegt.</p></div><div><h2 class=\"text-xl font-semibold text-foreground\">8. Kontakt zum Datenschutz</h2><p class=\"mt-2\">Fragen richten Sie bitte an <a class=\"underline\" href=\"mailto:info@isi-softsolutions.com\">info@isi-softsolutions.com</a>.</p></div></section>"
     }
   ]
 }

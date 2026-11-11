@@ -43,6 +43,20 @@
       "title": "Über uns",
       "seo_title": "Über uns – DME-Management GmbH",
       "seo_description": "Seit 2020 Ihr Partner für Bauservice, Baustoffe und Transport – heute mit Sitz in Bad Rodach."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – DME-Management GmbH",
+      "seo_description": "Impressum und Anbieterkennzeichnung der DME-Management GmbH, Bad Rodach."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutz",
+      "seo_title": "Datenschutz – DME-Management GmbH",
+      "seo_description": "Datenschutzerklärung der DME-Management GmbH, Bad Rodach."
     }
   ],
   "slots": [
@@ -66,6 +80,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/transport.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"bg-secondary\"><div class=\"mx-auto max-w-6xl px-6 py-16\"><p class=\"text-primary font-semibold uppercase tracking-widest text-sm\">Rechtliches</p><h1 class=\"text-4xl md:text-6xl mt-3\">Impressum</h1></div></section><section class=\"mx-auto max-w-3xl px-6 py-16 space-y-6\"><p><strong>DME-Management GmbH</strong><br/>Heldburger Str. 57<br/>96476 Bad Rodach</p><p>Vertreten durch den Geschäftsführer: Denis Bubic</p><p>Registergericht: Amtsgericht Coburg, HRB 6792</p><p>Telefon: +49 176 14618479<br/>E-Mail: info@dme-management.com</p><p>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV: Denis Bubic, Anschrift wie oben.</p></section>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"bg-secondary\"><div class=\"mx-auto max-w-6xl px-6 py-16\"><p class=\"text-primary font-semibold uppercase tracking-widest text-sm\">Rechtliches</p><h1 class=\"text-4xl md:text-6xl mt-3\">Datenschutz</h1></div></section><section class=\"mx-auto max-w-3xl px-6 py-16 space-y-6\"><h2 class=\"text-2xl\">Verantwortlicher</h2><p>DME-Management GmbH, Heldburger Str. 57, 96476 Bad Rodach, info@dme-management.com</p><h2 class=\"text-2xl\">Kontaktaufnahme</h2><p>Wenn Sie uns per E-Mail kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung der Anfrage (Art. 6 Abs. 1 lit. b DSGVO). Die Daten werden nicht ohne Ihre Einwilligung weitergegeben.</p><h2 class=\"text-2xl\">Bewerbungen</h2><p>Angaben und Unterlagen aus dem Bewerbungsformular verarbeiten wir ausschließlich zur Durchführung des Bewerbungsverfahrens (§ 26 BDSG, Art. 6 Abs. 1 lit. b DSGVO). Bei Absage werden die Daten spätestens sechs Monate nach Abschluss des Verfahrens gelöscht.</p><h2 class=\"text-2xl\">Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Beschwerde bei einer Aufsichtsbehörde.</p></section>"
     }
   ]
 }

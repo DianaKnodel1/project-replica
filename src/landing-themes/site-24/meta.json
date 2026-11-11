@@ -43,6 +43,20 @@
       "title": "Kontakt",
       "seo_title": "Kontakt – MD Management GmbH",
       "seo_description": "Kontakt zur MD Management GmbH, Poststr. 10-12, 27404 Zeven."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – MD Management GmbH",
+      "seo_description": "Impressum und Registerangaben der MD Management GmbH, Zeven."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutz",
+      "seo_title": "Datenschutz – MD Management GmbH",
+      "seo_description": "Datenschutzerklärung der MD Management GmbH, Zeven."
     }
   ],
   "slots": [
@@ -66,6 +80,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/electro.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"relative overflow-hidden pt-40 pb-20\"><div class=\"cell-grid absolute inset-0\"></div><div class=\"relative mx-auto max-w-7xl px-6\"><div class=\"rise\"><div class=\"flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-primary\"><span class=\"pulse-dot h-1.5 w-1.5 rounded-full bg-primary\"></span>Rechtliches</div></div><h1 class=\"rise mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] md:text-7xl\">Impressum</h1><p class=\"rise mt-6 max-w-2xl text-lg text-muted-foreground\">Angaben gemäß § 5 DDG</p></div></section><section class=\"mx-auto max-w-3xl space-y-8 px-6 pb-28 text-muted-foreground\"><div><h2 class=\"mb-2 text-xl text-foreground\">MD Management GmbH</h2>Poststr. 10-12<br/>27404 Zeven<br/>Deutschland</div><div><h2 class=\"mb-2 text-xl text-foreground\">Vertreten durch</h2>Geschäftsführer: Artur Andrzej Wagner</div><div><h2 class=\"mb-2 text-xl text-foreground\">Registereintrag</h2>Amtsgericht Tostedt, HRB 210951</div><div><h2 class=\"mb-2 text-xl text-foreground\">Kontakt</h2>Telefon: <a class=\"text-foreground underline-offset-4 hover:underline\" href=\"tel:+491636595227\">+49 163 6595227</a><br/>E-Mail: <a class=\"text-foreground underline-offset-4 hover:underline\" href=\"mailto:info@md-mgmtgmbh.com\">info@md-mgmtgmbh.com</a><br/>Website: <a class=\"text-foreground underline-offset-4 hover:underline\" href=\"https://md-mgmtgmbh.com\">md-mgmtgmbh.com</a></div><div><h2 class=\"mb-2 text-xl text-foreground\">Umsatzsteuer-ID</h2>[folgt]</div></section>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"relative overflow-hidden pt-40 pb-20\"><div class=\"cell-grid absolute inset-0\"></div><div class=\"relative mx-auto max-w-7xl px-6\"><div class=\"rise\"><div class=\"flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-primary\"><span class=\"pulse-dot h-1.5 w-1.5 rounded-full bg-primary\"></span>Rechtliches</div></div><h1 class=\"rise mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] md:text-7xl\">Datenschutz</h1><p class=\"rise mt-6 max-w-2xl text-lg text-muted-foreground\">Informationen zur Verarbeitung personenbezogener Daten.</p></div></section><section class=\"mx-auto max-w-3xl space-y-8 px-6 pb-28 text-muted-foreground\"><div><h2 class=\"mb-2 text-xl text-foreground\">Verantwortlicher</h2>MD Management GmbH, Poststr. 10-12, 27404 Zeven, vertreten durch Artur Andrzej Wagner.</div><div><h2 class=\"mb-2 text-xl text-foreground\">Kontaktaufnahme</h2>Wenn Sie uns kontaktieren, verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO).</div><div><h2 class=\"mb-2 text-xl text-foreground\">Ihre Rechte</h2>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Beschwerde bei einer Aufsichtsbehörde.</div><p class=\"text-sm\">Hinweis: Diese Erklärung ist eine Vorlage und sollte rechtlich geprüft werden.</p></section>"
     }
   ]
 }

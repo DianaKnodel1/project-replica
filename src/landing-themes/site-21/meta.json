@@ -43,6 +43,20 @@
       "title": "Über uns",
       "seo_title": "Über uns – FTS Management GmbH",
       "seo_description": "Philosophie, Werte und Geschäftsführung der FTS Management GmbH in Berlin."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – FTS Management GmbH",
+      "seo_description": "Impressum und Pflichtangaben der FTS Management GmbH, Berlin."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutz",
+      "seo_title": "Datenschutz – FTS Management GmbH",
+      "seo_description": "Datenschutzerklärung der FTS Management GmbH, Berlin."
     }
   ],
   "slots": [
@@ -59,6 +73,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/meeting.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"bg-navy-deep text-primary-foreground\"><div class=\"mx-auto max-w-7xl px-6 pb-24 pt-20 animate-fade-up\"><p class=\"eyebrow\">Rechtliches</p><h1 class=\"mt-5 max-w-3xl text-5xl leading-[1.05] md:text-6xl\">Impressum</h1></div></section><section class=\"mx-auto max-w-3xl space-y-8 px-6 py-20 leading-relaxed\"><div><h2 class=\"text-2xl\">Angaben gemäß § 5 DDG</h2><p class=\"mt-3\">FTS Management GmbH<br/>Otto-Weidt-Platz 12<br/>10557 Berlin</p></div><div><h2 class=\"text-2xl\">Vertreten durch</h2><p class=\"mt-3\">Samir Merjan, Geschäftsführer</p></div><div><h2 class=\"text-2xl\">Registereintrag</h2><p class=\"mt-3\">Amtsgericht Charlottenburg (Berlin)<br/>HRB 261446 B</p></div><div><h2 class=\"text-2xl\">Kontakt</h2><p class=\"mt-3\">Telefon: <a class=\"hover:text-accent\" href=\"tel:+4917614616073\">+49 176 14616073</a><br/>E-Mail: <a class=\"hover:text-accent\" href=\"mailto:info@fts-beratung.com\">info@fts-beratung.com</a><br/>Web: fts-beratung.com</p></div><div><h2 class=\"text-2xl\">Umsatzsteuer-ID</h2><p class=\"mt-3 text-muted-foreground\">Wird ergänzt.</p></div></section>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"bg-navy-deep text-primary-foreground\"><div class=\"mx-auto max-w-7xl px-6 pb-24 pt-20 animate-fade-up\"><p class=\"eyebrow\">Rechtliches</p><h1 class=\"mt-5 max-w-3xl text-5xl leading-[1.05] md:text-6xl\">Datenschutzerklärung</h1></div></section><section class=\"mx-auto max-w-3xl space-y-8 px-6 py-20 leading-relaxed text-muted-foreground\"><div><h2 class=\"text-2xl text-foreground\">1. Verantwortlicher</h2><p class=\"mt-3\">FTS Management GmbH, Otto-Weidt-Platz 12, 10557 Berlin, vertreten durch Samir Merjan.</p></div><div><h2 class=\"text-2xl text-foreground\">2. Erhebung von Daten</h2><p class=\"mt-3\">Wenn Sie uns über das Kontaktformular eine Anfrage senden, verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung der Anfrage (Art. 6 Abs. 1 lit. b DSGVO).</p></div><div><h2 class=\"text-2xl text-foreground\">3. Ihre Rechte</h2><p class=\"mt-3\">Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung sowie Beschwerde bei einer Aufsichtsbehörde.</p></div><p class=\"text-sm\">Hinweis: Diese Erklärung ist ein Grundtext und sollte vor Veröffentlichung rechtlich geprüft werden.</p></section>"
     }
   ]
 }

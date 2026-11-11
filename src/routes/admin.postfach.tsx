@@ -23,9 +23,10 @@ export const Route = createFileRoute("/admin/postfach")({
   component: PostfachPage,
 });
 
-type Filter = "all" | "lead" | "employee" | "unread";
+type Filter = "all" | "mail" | "contact" | "lead" | "employee" | "unread";
 const FILTERS: { id: Filter; label: string }[] = [
-  { id: "all", label: "Alle" }, { id: "lead", label: "Leads" }, { id: "employee", label: "Mitarbeiter" }, { id: "unread", label: "Ungelesen" },
+  { id: "all", label: "Alle" }, { id: "mail", label: "E-Mails" }, { id: "contact", label: "Kontaktanfragen" },
+  { id: "lead", label: "Leads" }, { id: "employee", label: "Mitarbeiter" }, { id: "unread", label: "Ungelesen" },
 ];
 function ago(iso: string) {
   const d = (Date.now() - new Date(iso).getTime()) / 60000;
@@ -180,7 +181,9 @@ function PostfachPage() {
                     <span className="truncate">{t.last_direction === "out" ? "Sie: " : ""}{t.preview}</span>
                   </div>
                   <div className="flex gap-1.5 pt-0.5">
-                    <Badge variant="outline" className="h-5 text-[10px] px-1.5">{KIND_LABEL[t.kind] ?? ""}</Badge>
+                    {t.contact
+                      ? <Badge variant="secondary" className="h-5 text-[10px] px-1.5 max-w-[14rem] truncate">Kontaktanfrage{t.site ? ` · ${t.site}` : ""}</Badge>
+                      : <Badge variant="outline" className="h-5 text-[10px] px-1.5">E-Mail · {KIND_LABEL[t.kind] ?? ""}</Badge>}
                     {t.unread > 0 && <Badge className="h-5 text-[10px] px-1.5">{t.unread} neu</Badge>}
                     {t.last_direction === "out" && t.last_opened && <Badge variant="secondary" className="h-5 text-[10px] px-1.5 gap-1"><CheckCheck className="h-3 w-3" />geöffnet</Badge>}
                   </div>
@@ -198,7 +201,7 @@ function PostfachPage() {
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="min-w-0 break-words">
                   <div className="font-semibold">{selected.name}</div>
-                  <div className="text-xs text-muted-foreground break-all">{selected.peer} · {KIND_LABEL[selected.kind] ?? ""}</div>
+                  <div className="text-xs text-muted-foreground break-all">{selected.peer} · {selected.contact ? `Kontaktanfrage${selected.site ? ` über ${selected.site}` : ""}` : `E-Mail · ${KIND_LABEL[selected.kind] ?? ""}`}</div>
                   {(selected.profile_id || selected.application_id) && (
                     <Link to="/admin/personen/$id" params={{ id: selected.profile_id ?? selected.application_id }} className="text-xs text-primary underline">Profil öffnen</Link>
                   )}
@@ -212,7 +215,7 @@ function PostfachPage() {
                 {messages.map((m) => (
                   <div key={m.id} className={`rounded-2xl p-3 text-sm ${m.direction === "in" ? "bg-muted mr-10 rounded-tl-sm" : "bg-primary text-primary-foreground ml-10 rounded-tr-sm"}`}>
                     <div className="text-xs opacity-70 mb-1">
-                      {m.direction === "in" ? "Eingang" : "Gesendet"} · {new Date(m.created_at).toLocaleString("de-DE")} · {m.subject}
+                      {m.direction === "in" ? (m.kind === "contact" || /^Kontaktanfrage über /.test(String(m.subject ?? "")) ? "Kontaktanfrage" : "Eingang") : "Gesendet"} · {new Date(m.created_at).toLocaleString("de-DE")} · {m.subject}
                     </div>
                     <div className="whitespace-pre-wrap break-words">{m.body_text}</div>
                     {m.direction === "out" && (

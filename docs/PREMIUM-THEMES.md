@@ -206,6 +206,8 @@ Regeln:
 ## 9. Bewerbungsbuttons und Formular
 
 - Jeder Bewerbungs-CTA ist ein Link `<a href="#bewerbung-form" …>{{cta_label}}</a>`.
+- Ausnahme feste Firmen-Websites (site-17+): sie dürfen ein eigenes Bewerbungsformular als `<div data-lv-apply id="lv-apply">` (ohne `<form>`) mit Button `data-lv-apply-send`, Statuszeile `data-lv-apply-status` und verstecktem Danke-Block `data-lv-apply-thanks` mitbringen; CTAs zeigen dann auf `/<seite>#lv-apply`. script.js sendet an `window.PORTAL_API` (gleiche Felder wie das Portal-Formular) und zeigt danach Danke-Block + Terminbuchung.
+- Rechtstexte: eine Website darf eigene Seiten mit Slug `impressum`/`datenschutz` haben (Text als `longtext`-Slot); diese haben dann Vorrang vor den automatisch erzeugten Rechtsseiten.
 - **Kein eigenes `<form>`** und kein eigener Submit-Code. Das System hängt Bewerbungsformular,
   Modal, Validierung, Tenant-Zuordnung, Flow-Type und Danke-Seite automatisch an.
 - Keine API-Adressen, Firmen-IDs, Schlüssel oder Tracking-Codes im Theme.

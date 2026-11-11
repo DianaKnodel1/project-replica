@@ -1106,6 +1106,15 @@ const server = createServer(async (req, res) => {
       return send(res, status, body, { "content-type": "text/html; charset=utf-8", "cache-control": "no-cache" });
     }
 
+    // Website-Themes mit eigener Seite (z. B. /bewerben, /impressum) zeigen diese statt der System-Seite.
+    if (isSiteLanding(row) && /^\/(bewerben|impressum|datenschutz)(\.html)?$/.test(path)) {
+      const key = path.replace(/^\//, "").replace(/\.html$/, "");
+      const own = (row.site_pages?.pages || []).some((p) => p && p.enabled !== false && String(p.slug || "").toLowerCase() === key);
+      if (own) {
+        const { body, status } = await renderSiteHtml(row, host, "view", key);
+        return send(res, status, body, { "content-type": "text/html; charset=utf-8", "cache-control": "no-cache" });
+      }
+    }
     if (path === "/bewerben" || path === "/bewerben.html") {
       if (isSiteLanding(row)) {
         const { body, status } = await renderSiteHtml(row, host, "apply", "");

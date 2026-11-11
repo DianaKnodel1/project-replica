@@ -43,6 +43,20 @@
       "title": "Über uns",
       "seo_title": "Über uns – WV Management, Überlingen",
       "seo_description": "Unabhängig, diskret, langfristig: die Haltung hinter WV Management, Unternehmensberatung am Bodensee."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – WV Management eGbR",
+      "seo_description": "Impressum und Anbieterkennzeichnung der WV Management eGbR, Überlingen."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutz",
+      "seo_title": "Datenschutz – WV Management eGbR",
+      "seo_description": "Datenschutzerklärung der WV Management eGbR, Überlingen."
     }
   ],
   "slots": [
@@ -59,6 +73,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/beratung-raum.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"navy\"><div class=\"mx-auto max-w-7xl px-6 pb-24 pt-16 md:px-10 md:pt-24\"><p class=\"eyebrow rise\">Rechtliches</p><h1 class=\"rise mt-6 max-w-4xl text-5xl leading-[1.05] md:text-7xl\">Impressum</h1></div></section><section class=\"mx-auto max-w-3xl space-y-10 px-6 py-24 leading-relaxed md:px-10\"><div><h2 class=\"text-3xl\">Angaben gemäß § 5 DDG</h2><p class=\"mt-4\">WV Management eGbR<br/>Prielweg 5<br/>88662 Überlingen<br/>Deutschland</p></div><div><h2 class=\"text-3xl\">Vertreten durch</h2><p class=\"mt-4\">[Namen der vertretungsberechtigten Gesellschafter]</p></div><div><h2 class=\"text-3xl\">Kontakt</h2><p class=\"mt-4\">Telefon: +49 176 14616223<br/>E-Mail: info@wvdigital-gmbh.com<br/>Web: wvdigital-gmbh.com</p></div><div><h2 class=\"text-3xl\">Registereintrag</h2><p class=\"mt-4\">Eingetragene Gesellschaft bürgerlichen Rechts (eGbR)<br/>Registergericht: Amtsgericht Freiburg<br/>Registernummer: GsR 1032<br/>LEI: 391200USC1MDEWOFGE97</p></div><div><h2 class=\"text-3xl\">Haftung für Inhalte</h2><p class=\"mt-4 text-muted-foreground\">Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte übernehmen wir jedoch keine Gewähr.</p></div></section>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"navy\"><div class=\"mx-auto max-w-7xl px-6 pb-24 pt-16 md:px-10 md:pt-24\"><p class=\"eyebrow rise\">Rechtliches</p><h1 class=\"rise mt-6 max-w-4xl text-5xl leading-[1.05] md:text-7xl\">Datenschutz</h1></div></section><section class=\"mx-auto max-w-3xl space-y-10 px-6 py-24 leading-relaxed md:px-10\"><div><h2 class=\"text-3xl\">Verantwortlicher</h2><p class=\"mt-4 text-muted-foreground\">WV Management eGbR, Überlingen. Kontakt: info@wvdigital-gmbh.com.</p></div><div><h2 class=\"text-3xl\">Hosting und Server-Logfiles</h2><p class=\"mt-4 text-muted-foreground\">Beim Aufruf dieser Webseite werden technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, Browsertyp) verarbeitet, um die Seite sicher auszuliefern. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.</p></div><div><h2 class=\"text-3xl\">Kontaktaufnahme</h2><p class=\"mt-4 text-muted-foreground\">Das Kontaktformular speichert keine Daten auf dieser Webseite, sondern öffnet Ihr E-Mail-Programm. Ihre Nachricht verarbeiten wir ausschließlich zur Bearbeitung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO).</p></div><div><h2 class=\"text-3xl\">Schriftarten</h2><p class=\"mt-4 text-muted-foreground\">Diese Seite lädt Schriftarten von Google Fonts. Dabei wird Ihre IP-Adresse an Google übermittelt.</p></div><div><h2 class=\"text-3xl\">Ihre Rechte</h2><p class=\"mt-4 text-muted-foreground\">Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde.</p></div></section>"
     }
   ]
 }

@@ -158,7 +158,7 @@ const peerOf = (m: any) => String(m.peer_email || (m.direction === "in" ? m.from
 export const listMailThreads = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => z.object({
-    filter: z.enum(["all", "lead", "employee", "unread"]).default("all"),
+    filter: z.enum(["all", "mail", "contact", "lead", "employee", "unread"]).default("all"),
     q: z.string().trim().max(120).default(""),
   }).parse(i ?? {}))
   .handler(async ({ data, context }) => {
@@ -179,9 +179,15 @@ export const listMailThreads = createServerFn({ method: "POST" })
       if (!peer) continue;
       let t = threads.get(peer);
       if (!t) {
-        t = { peer, last: m, unread: 0, kind: m.kind ?? "lead", application_id: m.application_id, profile_id: m.profile_id, tenant_id: m.tenant_id };
+        t = { peer, last: m, unread: 0, kind: m.kind === "contact" ? "lead" : m.kind ?? "lead", contact: false, mail: false, site: null as string | null, application_id: m.application_id, profile_id: m.profile_id, tenant_id: m.tenant_id };
         threads.set(peer, t);
       }
+      // Kontaktanfrage = Website-Formular (kind "contact"; ältere Einträge am Betreff erkennbar).
+      const isContact = m.kind === "contact" || /^Kontaktanfrage über /.test(String(m.subject ?? ""));
+      if (isContact) {
+        t.contact = true;
+        t.site ||= /^Kontaktanfrage über (\S+)/.exec(String(m.subject ?? ""))?.[1] ?? null;
+      } else t.mail = true;
       if (m.direction === "in" && !m.handled) t.unread++;
       t.application_id ||= m.application_id; t.profile_id ||= m.profile_id; t.tenant_id ||= m.tenant_id;
       if (m.kind === "employee") t.kind = "employee";
@@ -198,6 +204,7 @@ export const listMailThreads = createServerFn({ method: "POST" })
     const q = data.q.toLowerCase();
     const allThreads = list.map((t) => ({
       peer: t.peer, kind: t.kind, unread: t.unread, tenant_id: t.tenant_id,
+      contact: t.contact as boolean, mail: t.mail as boolean, site: t.site as string | null,
       application_id: t.application_id ?? null, profile_id: t.profile_id ?? null,
       name: (profBy.get(t.profile_id) as any)?.full_name ?? (appBy.get(t.application_id) as any)?.full_name ?? t.peer,
       status: (appBy.get(t.application_id) as any)?.lead_mail_status ?? null,
@@ -206,7 +213,10 @@ export const listMailThreads = createServerFn({ method: "POST" })
     }));
     const unreadTotal = allThreads.filter((t) => t.unread > 0).length;
     const out = allThreads.filter((t) =>
-      (data.filter === "all" || (data.filter === "unread" ? t.unread > 0 : data.filter === "employee" ? t.kind === "employee" : t.kind === "lead"))
+      (data.filter === "all" || (data.filter === "unread" ? t.unread > 0
+        : data.filter === "contact" ? t.contact
+        : data.filter === "mail" ? t.mail
+        : data.filter === "employee" ? t.kind === "employee" : t.kind === "lead"))
       && (!q || t.name.toLowerCase().includes(q) || t.peer.includes(q)));
     out.sort((a, b) => (Number(b.unread > 0) - Number(a.unread > 0)) || String(b.last_at).localeCompare(String(a.last_at)));
     return { threads: out, unreadTotal };
@@ -351,7 +361,8 @@ export const sendPortalMail = createServerFn({ method: "POST" })
     // Art des Verlaufs: Mitarbeiter, Lead (bekannter Lead-Verlauf) oder frei.
     const { data: prev } = await db.from("lead_messages").select("kind, application_id")
       .eq("peer_email", data.to).order("created_at", { ascending: false }).limit(1).maybeSingle();
-    const kind = data.profileId ? "employee" : prev?.kind ?? (data.applicationId ? "lead" : "other");
+    const prevKind = prev?.kind === "contact" ? "lead" : prev?.kind;
+    const kind = data.profileId ? "employee" : prevKind ?? (data.applicationId ? "lead" : "other");
     const name = (s.sender_name ?? "").replace(/["<>]/g, "");
     const r = await sendViaResend({
       apiKey, from: name ? `"${name}" <${s.sender_email}>` : s.sender_email, to: data.to,

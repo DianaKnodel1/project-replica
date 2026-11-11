@@ -15,6 +15,27 @@
       "title": "SZP GmbH",
       "seo_title": "SZP GmbH – Beteiligungen & Beratung, Mittweida",
       "seo_description": "Beteiligungsmanagement sowie Unternehmens- und Technologieberatung aus Mittweida, Sachsen."
+    },
+    {
+      "id": "bewerbung",
+      "slug": "bewerbung",
+      "title": "Bewerbung",
+      "seo_title": "Bewerbung – SZP Management",
+      "seo_description": "Jetzt bei SZP Management bewerben."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – SZP Management GmbH",
+      "seo_description": "Impressum und Anbieterkennzeichnung der SZP Management GmbH, Mittweida."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutzerklärung",
+      "seo_title": "Datenschutzerklärung – SZP GmbH",
+      "seo_description": "Datenschutzerklärung der SZP Management GmbH, Mittweida: Hosting, Kontaktformular, Ihre Rechte."
     }
   ],
   "slots": [
@@ -24,6 +45,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/architecture.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<article class=\"mx-auto max-w-3xl space-y-6 px-6 py-20\"><h1 class=\"text-5xl text-primary\">Impressum</h1><p>SZP Management GmbH<br/>Zschöppichen 18<br/>09648 Mittweida</p><p>Vertreten durch den Geschäftsführer: Sven Sieber</p><p>Registergericht: Amtsgericht Chemnitz<br/>Registernummer: HRB 31544</p><p>Telefon: <a class=\"underline\" href=\"tel:+4917614611775\">+49 176 14611775</a><br/>E-Mail: <a class=\"underline\" href=\"mailto:info@szp-gmbh.com\">info@szp-gmbh.com</a><br/>Website: szp-gmbh.com</p></article>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<article class=\"mx-auto max-w-3xl space-y-10 px-6 py-20 leading-relaxed\"><h1 class=\"text-5xl text-primary\">Datenschutzerklärung</h1><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">1. Verantwortlicher</h2><p>SZP Management GmbH<br/>Zschöppichen 18<br/>09648 Mittweida<br/>Vertreten durch den Geschäftsführer Sven Sieber</p><p>Telefon: <a class=\"underline\" href=\"tel:+4917614611775\">+49 176 14611775</a><br/>E-Mail: <a class=\"underline\" href=\"mailto:info@szp-gmbh.com\">info@szp-gmbh.com</a></p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">2. Allgemeines zur Datenverarbeitung</h2><p>Wir verarbeiten personenbezogene Daten nur, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und Leistungen erforderlich ist. Rechtsgrundlagen sind insbesondere Art. 6 Abs. 1 lit. a DSGVO (Einwilligung), lit. b (Vertrag bzw. vorvertragliche Maßnahmen), lit. c (rechtliche Verpflichtung) und lit. f (berechtigtes Interesse).</p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">3. Hosting und Server-Protokolle</h2><p>Diese Website wird bei einem externen Dienstleister gehostet. Beim Aufruf werden automatisch Informationen erfasst, die Ihr Browser übermittelt: IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite, Referrer-URL, Browsertyp und Betriebssystem.</p><p>Die Verarbeitung erfolgt zur Sicherstellung eines störungsfreien Betriebs und der Sicherheit der Website (Art. 6 Abs. 1 lit. f DSGVO). Die Protokolldaten werden nach kurzer Zeit gelöscht, sofern keine sicherheitsrelevanten Vorfälle eine längere Aufbewahrung erfordern. Mit dem Hoster besteht ein Vertrag zur Auftragsverarbeitung gemäß Art. 28 DSGVO.</p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">4. SSL-/TLS-Verschlüsselung</h2><p>Diese Website nutzt aus Sicherheitsgründen eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie an „https://“ in der Adresszeile Ihres Browsers.</p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">5. Kontaktformular, E-Mail und Telefon</h2><p>Wenn Sie uns über das Kontaktformular, per E-Mail oder telefonisch kontaktieren, verarbeiten wir Ihre Angaben (Name, E-Mail-Adresse, gegebenenfalls Telefonnummer und Ihre Nachricht) zur Bearbeitung Ihrer Anfrage und für mögliche Anschlussfragen.</p><p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit einem Vertrag zusammenhängt, ansonsten unser berechtigtes Interesse an der Beantwortung von Anfragen (Art. 6 Abs. 1 lit. f DSGVO). Die Daten werden gelöscht, sobald der Zweck entfällt und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">6. Cookies und Tracking</h2><p>Wir setzen keine Cookies zu Analyse- oder Werbezwecken ein und verwenden keine Tracking- oder Analysedienste.</p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">7. Schriftarten</h2><p>Die auf dieser Website verwendeten Schriftarten werden lokal von unserem Server geladen. Eine Verbindung zu Servern Dritter (z. B. Google) findet dabei nicht statt.</p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">8. Weitergabe und Speicherdauer</h2><p>Eine Weitergabe Ihrer Daten an Dritte erfolgt nur, wenn dies gesetzlich erlaubt ist, Sie eingewilligt haben oder es zur Vertragserfüllung erforderlich ist. Daten werden nur so lange gespeichert, wie es für den jeweiligen Zweck erforderlich ist oder gesetzliche Aufbewahrungsfristen bestehen.</p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">9. Ihre Rechte</h2><p>Sie haben jederzeit das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) sowie Widerspruch gegen die Verarbeitung (Art. 21). Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen. Wenden Sie sich dazu an info@szp-gmbh.com.</p></section><section class=\"space-y-3\"><h2 class=\"text-2xl text-primary\">10. Beschwerderecht</h2><p>Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Zuständig ist: Sächsische Datenschutz- und Transparenzbeauftragte, Devrientstraße 5, 01067 Dresden.</p></section><p class=\"text-sm text-muted-foreground\">Stand: November 2026</p></article>"
     }
   ]
 }

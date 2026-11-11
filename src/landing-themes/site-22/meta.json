@@ -22,6 +22,20 @@
       "title": "Karriere",
       "seo_title": "Karriere – Mitarbeiter im Kundenmanagement (m/w/d) | HD Agentur Worms",
       "seo_description": "Jetzt bewerben als Mitarbeiter im Kundenmanagement (m/w/d) bei der HD Agentur in Worms – schnell und einfach online."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – HD Agentur UG",
+      "seo_description": "Impressum und Anbieterkennzeichnung der HD Agentur UG (haftungsbeschränkt), Worms."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutzerklärung",
+      "seo_title": "Datenschutzerklärung – HD Agentur UG",
+      "seo_description": "Informationen zur Verarbeitung personenbezogener Daten durch die HD Agentur UG, Worms."
     }
   ],
   "slots": [
@@ -31,6 +45,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/hero.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<article class=\"mx-auto max-w-3xl space-y-6 px-6 py-16\"><h1 class=\"text-4xl font-bold\">Impressum</h1><p class=\"font-semibold\">Angaben gemäß § 5 DDG</p><p>HD Agentur UG (haftungsbeschränkt)<br/>Hans-Kissel-Str. 4<br/>67550 Worms</p><p><strong>Vertreten durch die Geschäftsführerin:</strong> Nur Hanna Dilci</p><p><strong>Registereintrag:</strong> Amtsgericht Mainz, HRB 53226</p><p><strong>Kontakt:</strong><br/>Telefon: +49 176 14617515<br/>E-Mail: info@hd-agentur.com</p><p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:</strong> Nur Hanna Dilci, Anschrift wie oben</p><p class=\"text-sm text-muted-foreground\">Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p></article>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<article class=\"mx-auto max-w-3xl space-y-6 px-6 py-16\"><h1 class=\"text-4xl font-bold\">Datenschutzerklärung</h1><h2 class=\"text-xl font-semibold\">1. Verantwortlicher</h2><p>HD Agentur UG (haftungsbeschränkt), Hans-Kissel-Str. 4, 67550 Worms, vertreten durch Nur Hanna Dilci. E-Mail: info@hd-agentur.com</p><h2 class=\"text-xl font-semibold\">2. Server-Logfiles</h2><p>Beim Aufruf dieser Website werden technisch notwendige Daten (z. B. IP-Adresse, Datum, Uhrzeit, Browsertyp) verarbeitet, um die Website bereitzustellen (Art. 6 Abs. 1 lit. f DSGVO).</p><h2 class=\"text-xl font-semibold\">3. Kontaktaufnahme</h2><p>Wenn Sie uns per E-Mail oder über das Kontaktformular kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO). Das Formular öffnet Ihr E-Mail-Programm; es werden keine Daten auf dieser Website gespeichert.</p><h2 class=\"text-xl font-semibold\">4. Bewerbungen</h2><p>Wenn Sie sich über unser Bewerbungsformular bewerben, speichern wir Vorname, Nachname, E-Mail-Adresse und Telefonnummer, um Sie im Rahmen des Bewerbungsverfahrens zu kontaktieren (Art. 6 Abs. 1 lit. b DSGVO, § 26 BDSG). Die Daten werden nach Abschluss des Verfahrens, spätestens nach 6 Monaten, gelöscht, sofern keine Einstellung erfolgt.</p><h2 class=\"text-xl font-semibold\">5. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde, z. B. dem Landesbeauftragten für den Datenschutz Rheinland-Pfalz.</p><h2 class=\"text-xl font-semibold\">6. Cookies</h2><p>Diese Website verwendet keine Tracking-Cookies.</p></article>"
     }
   ]
 }

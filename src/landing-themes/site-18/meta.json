@@ -17,6 +17,13 @@
       "seo_description": "Unternehmensberatung, strategisches Management und Unternehmensbeteiligungen aus Bruchköbel bei Hanau. Seit 2012."
     },
     {
+      "id": "bewerbung",
+      "slug": "bewerbung",
+      "title": "Kontakt",
+      "seo_title": "Kontakt – G.A.B. Management GmbH",
+      "seo_description": "Kontakt zur G.A.B. Management GmbH in Bruchköbel."
+    },
+    {
       "id": "kontakt",
       "slug": "kontakt",
       "title": "Kontakt",
@@ -36,6 +43,20 @@
       "title": "Unternehmen",
       "seo_title": "Unternehmen – G.A.B. Management GmbH",
       "seo_description": "Seit 2012 im Main-Kinzig-Kreis: Geschichte und Geschäftsführung der G.A.B. Management GmbH."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – G.A.B. Management GmbH",
+      "seo_description": "Impressum und Pflichtangaben der G.A.B. Management GmbH."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutz",
+      "seo_title": "Datenschutz – G.A.B. Management GmbH",
+      "seo_description": "Datenschutzerklärung der G.A.B. Management GmbH: welche Daten wir verarbeiten und welche Rechte Sie haben."
     }
   ],
   "slots": [
@@ -45,6 +66,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/hero.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"mx-auto max-w-7xl px-6 pt-20 pb-12\"><div class=\"grid gap-8 md:grid-cols-12\"><p class=\"font-serif text-7xl text-brass md:col-span-2\">§</p><div class=\"rise md:col-span-9\"><p class=\"eyebrow\">Rechtliches</p><h1 class=\"mt-4 text-4xl leading-[1.05] [overflow-wrap:anywhere] sm:text-5xl md:text-7xl\" lang=\"de\" style=\"hyphens:auto\">Impressum</h1></div></div></section><section class=\"mx-auto max-w-3xl px-6 leading-relaxed text-muted-foreground [&amp;_p]:mt-4\"><h2 class=\"mt-12 text-2xl text-foreground\">Angaben gemäß § 5 DDG</h2><p>G.A.B. Management GmbH<br/>Gerhart-Hauptmann-Str. 6<br/>63486 Bruchköbel<br/>Deutschland</p><p>Vertreten durch den Geschäftsführer: Gerhard Beilner</p><p>Registergericht: Amtsgericht Hanau<br/>Registernummer: HRB 94044</p><h2 class=\"mt-12 text-2xl text-foreground\">Kontakt</h2><p>Telefon: <a class=\"hover:text-brass\" href=\"tel:+4917614295646\">+49 176 1429 5646</a><br/>E-Mail: <a class=\"hover:text-brass\" href=\"mailto:info@gab-management.com\">info@gab-management.com</a></p><h2 class=\"mt-12 text-2xl text-foreground\">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2><p>Gerhard Beilner, Anschrift wie oben</p><h2 class=\"mt-12 text-2xl text-foreground\">Verbraucherstreitbeilegung</h2><p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p><h2 class=\"mt-12 text-2xl text-foreground\">Haftung für Inhalte</h2><p>Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen. Bei Bekanntwerden von Rechtsverletzungen entfernen wir entsprechende Inhalte umgehend.</p><h2 class=\"mt-12 text-2xl text-foreground\">Haftung für Links</h2><p>Unser Angebot kann Links zu externen Websites Dritter enthalten, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Bei Bekanntwerden von Rechtsverletzungen entfernen wir derartige Links umgehend.</p><h2 class=\"mt-12 text-2xl text-foreground\">Urheberrecht</h2><p>Die durch uns erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung und Verbreitung außerhalb der Grenzen des Urheberrechts bedürfen unserer schriftlichen Zustimmung.</p></section>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"mx-auto max-w-7xl px-6 pt-20 pb-12\"><div class=\"grid gap-8 md:grid-cols-12\"><p class=\"font-serif text-7xl text-brass md:col-span-2\">§</p><div class=\"rise md:col-span-9\"><p class=\"eyebrow\">Rechtliches</p><h1 class=\"mt-4 text-4xl leading-[1.05] [overflow-wrap:anywhere] sm:text-5xl md:text-7xl\" lang=\"de\" style=\"hyphens:auto\">Datenschutz</h1></div></div></section><section class=\"mx-auto max-w-3xl px-6 leading-relaxed text-muted-foreground [&amp;_p]:mt-4 [&amp;_li]:mt-2\"><h2 class=\"mt-12 text-2xl text-foreground\">1. Verantwortlicher</h2><p>G.A.B. Management GmbH, vertreten durch den Geschäftsführer Gerhard Beilner<br/>Gerhart-Hauptmann-Str. 6, 63486 Bruchköbel<br/>Telefon: <a class=\"hover:text-brass\" href=\"tel:+4917614295646\">+49 176 1429 5646</a> · E-Mail: <a class=\"hover:text-brass\" href=\"mailto:info@gab-management.com\">info@gab-management.com</a></p><h2 class=\"mt-12 text-2xl text-foreground\">2. Allgemeines</h2><p>Wir verarbeiten personenbezogene Daten nur, soweit dies zur Bereitstellung dieser Website, zur Bearbeitung von Anfragen und Bewerbungen oder aufgrund gesetzlicher Pflichten erforderlich ist. Rechtsgrundlagen sind insbesondere Art. 6 Abs. 1 lit. a (Einwilligung), lit. b (Vertrag bzw. vorvertragliche Maßnahmen), lit. c (rechtliche Verpflichtung) und lit. f DSGVO (berechtigtes Interesse).</p><h2 class=\"mt-12 text-2xl text-foreground\">3. Hosting</h2><p>Diese Website wird bei einem externen Dienstleister (Lovable bzw. dessen Infrastrukturpartner) betrieben. Beim Aufruf der Seiten werden die unten genannten Zugriffsdaten auf dessen Servern verarbeitet. Mit dem Anbieter besteht ein Vertrag zur Auftragsverarbeitung gemäß Art. 28 DSGVO; soweit Daten in Drittländer übermittelt werden, erfolgt dies auf Grundlage von EU-Standardvertragsklauseln. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO – unser Interesse an einer sicheren und zuverlässigen Bereitstellung der Website.</p><h2 class=\"mt-12 text-2xl text-foreground\">4. Server-Logfiles</h2><p>Bei jedem Seitenaufruf werden automatisch erfasst: IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Referrer-URL, Browsertyp und Betriebssystem. Diese Daten dienen ausschließlich der technischen Sicherheit und Fehleranalyse, werden nicht mit anderen Daten zusammengeführt und nach spätestens 30 Tagen gelöscht. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</p><h2 class=\"mt-12 text-2xl text-foreground\">5. Schriftarten</h2><p>Die auf dieser Website verwendeten Schriften werden lokal von unserem Server geladen. Es findet keine Verbindung zu Servern von Google oder anderen Drittanbietern statt.</p><h2 class=\"mt-12 text-2xl text-foreground\">6. Cookies und Tracking</h2><p>Wir setzen keine Cookies zu Analyse- oder Werbezwecken und verwenden keine Tracking-Dienste.</p><h2 class=\"mt-12 text-2xl text-foreground\">7. Kontaktaufnahme</h2><p>Wenn Sie uns per Kontaktformular, E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Angaben (z. B. Name, E-Mail-Adresse, Unternehmen, Nachricht) zur Bearbeitung Ihrer Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit einem Vertrag zusammenhängt, ansonsten Art. 6 Abs. 1 lit. f DSGVO. Die Daten werden gelöscht, sobald die Anfrage abschließend bearbeitet ist, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.</p><h2 class=\"mt-12 text-2xl text-foreground\">8. Bewerbungen</h2><p>Im Rahmen einer Bewerbung verarbeiten wir die von Ihnen übermittelten Daten (z. B. Anrede, Name, Kontaktdaten, Wohnort) ausschließlich zur Durchführung des Bewerbungsverfahrens. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO in Verbindung mit § 26 BDSG sowie Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Kommt kein Arbeitsverhältnis zustande, werden Ihre Daten spätestens sechs Monate nach Abschluss des Verfahrens gelöscht, sofern Sie nicht in eine längere Speicherung eingewilligt haben. Bei Einstellung werden die Daten in die Personalakte übernommen.</p><h2 class=\"mt-12 text-2xl text-foreground\">9. Speicherdauer</h2><p>Wir speichern personenbezogene Daten nur so lange, wie es für den jeweiligen Zweck erforderlich ist oder gesetzliche Aufbewahrungsfristen (z. B. nach HGB und AO bis zu zehn Jahre) dies vorschreiben.</p><h2 class=\"mt-12 text-2xl text-foreground\">10. Weitergabe von Daten</h2><p>Eine Weitergabe an Dritte erfolgt nur, wenn dies gesetzlich erlaubt ist, Sie eingewilligt haben oder es für die Vertragsabwicklung erforderlich ist, sowie an sorgfältig ausgewählte Auftragsverarbeiter (z. B. Hosting).</p><h2 class=\"mt-12 text-2xl text-foreground\">11. Ihre Rechte</h2><ul class=\"list-disc pl-5\"><li>Auskunft über Ihre gespeicherten Daten (Art. 15 DSGVO)</li><li>Berichtigung unrichtiger Daten (Art. 16 DSGVO)</li><li>Löschung (Art. 17 DSGVO) und Einschränkung der Verarbeitung (Art. 18 DSGVO)</li><li>Datenübertragbarkeit (Art. 20 DSGVO)</li><li>Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21 DSGVO)</li><li>Widerruf erteilter Einwilligungen mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li></ul><p>Zur Ausübung Ihrer Rechte genügt eine Nachricht an info@gab-management.com.</p><h2 class=\"mt-12 text-2xl text-foreground\">12. Beschwerderecht</h2><p>Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Zuständig für uns ist: Der Hessische Beauftragte für Datenschutz und Informationsfreiheit, Gustav-Stresemann-Ring 1, 65189 Wiesbaden.</p><h2 class=\"mt-12 text-2xl text-foreground\">13. Datensicherheit</h2><p>Diese Website nutzt eine SSL-/TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie an „https://“ in der Adresszeile Ihres Browsers.</p><p class=\"mt-12 text-sm\">Stand: November 2026</p></section>"
     }
   ]
 }

@@ -43,6 +43,20 @@
       "title": "Unternehmen",
       "seo_title": "Unternehmen – BST Management GmbH",
       "seo_description": "Die BST Management GmbH ist eine inhabergeführte Management-Holding mit Sitz in Worms, gegründet 2019."
+    },
+    {
+      "id": "impressum",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo_title": "Impressum – BST Management GmbH",
+      "seo_description": "Impressum der BST Management GmbH, Worms."
+    },
+    {
+      "id": "datenschutz",
+      "slug": "datenschutz",
+      "title": "Datenschutz",
+      "seo_title": "Datenschutz – BST Management GmbH",
+      "seo_description": "Datenschutzerklärung der BST Management GmbH."
     }
   ],
   "slots": [
@@ -52,6 +66,20 @@
       "type": "image",
       "group": "Bilder",
       "default": "assets/img/hero.jpg"
+    },
+    {
+      "key": "legal_impressum",
+      "label": "Impressum (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"relative overflow-hidden pb-24 pt-48\"><div aria-hidden=\"true\" class=\"float-slow absolute -right-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-accent/10 blur-3xl\"></div><div class=\"relative mx-auto max-w-7xl px-6 lg:px-10 fade-up\"><p class=\"eyebrow\">Rechtliches</p><h1 class=\"mt-6 max-w-4xl text-5xl leading-[1.02] md:text-8xl\">Impressum</h1><div class=\"mt-16 h-px w-full origin-left bg-gradient-to-r from-accent via-accent/30 to-transparent\"></div></div></section><section class=\"mx-auto max-w-3xl space-y-8 px-6 py-20 leading-relaxed\"><div><h2 class=\"text-2xl\">Angaben gemäß § 5 DDG</h2><p class=\"mt-2\">BST Management GmbH<br/>Herrngasse 9<br/>67549 Worms</p></div><div><h2 class=\"text-2xl\">Vertreten durch</h2><p class=\"mt-2\">Geschäftsführerin: Ladda Karlein</p></div><div><h2 class=\"text-2xl\">Registereintrag</h2><p class=\"mt-2\">Registergericht: Amtsgericht Darmstadt<br/>Registernummer: HRB 98599</p></div><div><h2 class=\"text-2xl\">Kontakt</h2><p class=\"mt-2\">Telefon: <a class=\"text-accent hover:underline\" href=\"tel:+4917616149954\">+49 176 1614 9954</a><br/>E-Mail: <a class=\"text-accent hover:underline\" href=\"mailto:info@bst-beratung.com\">info@bst-beratung.com</a><br/>Internet: bst-beratung.com</p></div><div><h2 class=\"text-2xl\">Umsatzsteuer-ID</h2><p class=\"mt-2\">DE000000000</p></div></section>"
+    },
+    {
+      "key": "legal_datenschutz",
+      "label": "Datenschutzerklärung (HTML, Original-Text)",
+      "type": "longtext",
+      "group": "Rechtstexte",
+      "default": "<section class=\"relative overflow-hidden pb-24 pt-48\"><div aria-hidden=\"true\" class=\"float-slow absolute -right-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-accent/10 blur-3xl\"></div><div class=\"relative mx-auto max-w-7xl px-6 lg:px-10 fade-up\"><p class=\"eyebrow\">Rechtliches</p><h1 class=\"mt-6 max-w-4xl text-5xl leading-[1.02] md:text-8xl\">Datenschutz</h1><div class=\"mt-16 h-px w-full origin-left bg-gradient-to-r from-accent via-accent/30 to-transparent\"></div></div></section><section class=\"mx-auto max-w-3xl space-y-8 px-6 py-20 leading-relaxed text-muted-foreground\"><div><h2 class=\"text-2xl text-foreground\">1. Verantwortlicher</h2><p class=\"mt-2\">BST Management GmbH, Herrngasse 9, 67549 Worms, vertreten durch Ladda Karlein.</p></div><div><h2 class=\"text-2xl text-foreground\">2. Erhebung beim Besuch der Website</h2><p class=\"mt-2\">Beim Aufruf dieser Website werden durch den Hosting-Anbieter technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, Browser) verarbeitet, um die Seite sicher bereitzustellen (Art. 6 Abs. 1 lit. f DSGVO).</p></div><div><h2 class=\"text-2xl text-foreground\">3. Kontaktaufnahme</h2><p class=\"mt-2\">Wenn Sie uns kontaktieren, verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO).</p></div><div><h2 class=\"text-2xl text-foreground\">4. Bewerbungen</h2><p class=\"mt-2\">Bewerbungsunterlagen verarbeiten wir ausschließlich zur Durchführung des Bewerbungsverfahrens (§ 26 BDSG, Art. 6 Abs. 1 lit. b DSGVO). Sie werden spätestens sechs Monate nach Abschluss des Verfahrens gelöscht, sofern Sie nicht in eine längere Speicherung eingewilligt haben.</p></div><div><h2 class=\"text-2xl text-foreground\">5. Ihre Rechte</h2><p class=\"mt-2\">Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie ein Beschwerderecht bei einer Aufsichtsbehörde.</p></div><p class=\"text-sm\">Hinweis: Diese Erklärung ist ein Entwurf und sollte rechtlich geprüft werden.</p></section>"
     }
   ]
 }

@@ -62,7 +62,9 @@ describe("Premium-Theme-Standard", () => {
 
       it("hat Startseite, Bewerbungs-CTA, Rechtslinks und keine festen Firmen-/API-Daten", () => {
         expect(html).toMatch(/<!--\s*lv-page:home\s*-->/);
-        expect(html).toContain('href="#bewerbung-form"');
+        // Bewerbungs-CTA aufs Portal-Fenster ODER ein eigenes Website-Formular (data-lv-apply).
+        if (!html.includes("data-lv-apply")) expect(html).toContain('href="#bewerbung-form"');
+        else expect(html).toMatch(/data-lv-apply-send/);
         expect(html).toContain('href="/impressum.html"');
         expect(html).toContain('href="/datenschutz.html"');
         expect(html).not.toMatch(/<form\b/i);
