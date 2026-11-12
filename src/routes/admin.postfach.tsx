@@ -10,6 +10,17 @@ import { ArrowLeft, Loader2, PenSquare, Search, RefreshCw, Reply, Send, CheckChe
 import { Link } from "@tanstack/react-router";
 import { syncInbox, listMailThreads, getMailThread, setThreadHandled, sendPortalMail } from "@/lib/lead-mailing.functions";
 import { ComposeMailDialog } from "@/components/mail/ComposeMailDialog";
+import { MAIL_BLOCK_PREFIX } from "@/lib/lead-mailing";
+async function sendWithOverride(fn: (o: boolean) => Promise<unknown>) {
+  try { return await fn(false); } catch (e: any) {
+    const msg = String(e?.message ?? "");
+    if (!msg.startsWith(MAIL_BLOCK_PREFIX)) throw e;
+    const why = msg.slice(MAIL_BLOCK_PREFIX.length).trim();
+    if (!window.confirm(`${why}\n\nSperre aufheben und trotzdem senden?`)) throw new Error("Nicht gesendet.");
+    return await fn(true);
+  }
+}
+
 
 export const Route = createFileRoute("/admin/postfach")({
   head: () => ({ meta: [
@@ -115,7 +126,7 @@ function PostfachPage() {
     if (!selected.tenant_id) { toast.error("Diesem Verlauf ist keine Firma zugeordnet. Bitte über „Neue Nachricht“ schreiben."); return; }
     setSending(true);
     try {
-      await sendFn({ data: { to: selected.peer, tenantId: selected.tenant_id, subject, text, profileId: selected.profile_id, applicationId: selected.application_id } });
+      await sendWithOverride((override) => sendFn({ data: { to: selected.peer, tenantId: selected.tenant_id!, subject, text, profileId: selected.profile_id, applicationId: selected.application_id, override } }));
       toast.success("Antwort gesendet");
       setText("");
       await open(selected);

@@ -193,6 +193,10 @@ export async function handleResendEvent(evt: any) {
   if (type === "email.bounced" || type === "email.complained") {
     const to = addrOf(data.to);
     if (!to) return { ignored: true };
+    if (type === "email.bounced") {
+      const { isPermanentBounce } = await import("@/lib/lead-mailing");
+      if (!isPermanentBounce(data.bounce)) return { ignored: "transient_bounce" };
+    }
     const status = type === "email.bounced" ? "bounced" : "unsubscribed";
     await db.from("applications").update({ lead_mail_status: status, lead_mail_error: type }).ilike("email", to).not("lead_source", "is", null);
     return { updated: status };

@@ -9,6 +9,17 @@ import { Loader2, Search, X } from "lucide-react";
 import { toast } from "sonner";
 import { getMailComposeContext, searchMailRecipients, sendPortalMail, resolveRecipientByEmail } from "@/lib/lead-mailing.functions";
 import { MAIL_TEMPLATES } from "@/lib/mail-template";
+import { MAIL_BLOCK_PREFIX } from "@/lib/lead-mailing";
+async function sendWithOverride(fn: (o: boolean) => Promise<unknown>) {
+  try { return await fn(false); } catch (e: any) {
+    const msg = String(e?.message ?? "");
+    if (!msg.startsWith(MAIL_BLOCK_PREFIX)) throw e;
+    const why = msg.slice(MAIL_BLOCK_PREFIX.length).trim();
+    if (!window.confirm(`${why}\n\nSperre aufheben und trotzdem senden?`)) throw new Error("Nicht gesendet.");
+    return await fn(true);
+  }
+}
+
 
 export type MailRecipient = {
   type: "employee" | "applicant" | "free";
@@ -85,10 +96,10 @@ export function ComposeMailDialog({ open, onOpenChange, profileId, userId, appli
     if (!recipient?.email || !tenantId) return;
     setSending(true);
     try {
-      await sendFn({ data: {
-        to: recipient.email, tenantId, subject, text,
-        profileId: recipient.profile_id, applicationId: recipient.application_id,
-      } });
+      await sendWithOverride((override) => sendFn({ data: {
+        to: recipient.email!, tenantId, subject, text,
+        profileId: recipient.profile_id, applicationId: recipient.application_id, override,
+      } }));
       toast.success("E-Mail gesendet");
       onSent?.();
       onOpenChange(false);

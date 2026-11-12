@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseLeadCsv, renderLeadTemplate, allowedToSendNow, isUnsubscribeReply } from "@/lib/lead-mailing";
+import { parseLeadCsv, renderLeadTemplate, allowedToSendNow, isUnsubscribeReply, isPermanentBounce } from "@/lib/lead-mailing";
 
 describe("parseLeadCsv", () => {
   it("entfernt Dubletten und ungültige Adressen", () => {
@@ -38,5 +38,18 @@ describe("isUnsubscribeReply", () => {
   it("erkennt Abmeldung", () => {
     expect(isUnsubscribeReply("Re: Bewerbung", "Bitte abmelden")).toBe(true);
     expect(isUnsubscribeReply("Re: Bewerbung", "Wann ist das Interview?")).toBe(false);
+  });
+});
+
+describe("Fehlsperren", () => {
+  it("keine Nachrichten bekommen ist keine Abmeldung", () => {
+    expect(isUnsubscribeReply("Re: Bewerbung", "Ich habe noch keine Nachrichten bekommen")).toBe(false);
+  });
+  it("Abmelde-Wort nur im zitierten Text zählt nicht", () => {
+    expect(isUnsubscribeReply("Re: Info", "Danke, passt!\n> Zum Abmelden antworten Sie mit Abmeldung")).toBe(false);
+  });
+  it("volles Postfach sperrt nicht, unbekannte Adresse schon", () => {
+    expect(isPermanentBounce({ type: "Transient" })).toBe(false);
+    expect(isPermanentBounce({ type: "Permanent" })).toBe(true);
   });
 });

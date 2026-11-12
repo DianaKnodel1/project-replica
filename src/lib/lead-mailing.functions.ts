@@ -341,6 +341,7 @@ export const sendPortalMail = createServerFn({ method: "POST" })
     text: z.string().trim().min(1).max(8000),
     profileId: z.string().uuid().nullable().optional(),
     applicationId: z.string().uuid().nullable().optional(),
+    override: z.boolean().optional(),
   }).parse(i))
   .handler(async ({ data, context }) => {
     await requireAdmin(context);
@@ -350,9 +351,17 @@ export const sendPortalMail = createServerFn({ method: "POST" })
       const m = await resolveByEmail(db, data.to, data.tenantId);
       if (m) { data.profileId = m.profile_id; data.applicationId = m.application_id; }
     }
-    const { data: blocked } = await db.from("applications").select("id")
+    const { data: blocked } = await db.from("applications").select("id, lead_mail_status, lead_mail_error")
       .ilike("email", data.to).in("lead_mail_status", ["unsubscribed", "bounced"]).limit(1);
-    if (blocked?.length && !data.profileId) throw new Error("Diese Adresse ist abgemeldet oder nicht zustellbar.");
+    if (blocked?.length && !data.profileId) {
+      if (!data.override) {
+        const { mailBlockMessage } = await import("@/lib/lead-mailing");
+        throw new Error(mailBlockMessage(blocked[0].lead_mail_status, blocked[0].lead_mail_error));
+      }
+      // Admin hebt die Sperre bewusst auf.
+      await db.from("applications").update({ lead_mail_status: "replied", lead_mail_error: null })
+        .ilike("email", data.to).in("lead_mail_status", ["unsubscribed", "bounced"]);
+    }
     const { data: s } = await db.from("lead_mail_settings").select("sender_email, sender_name").eq("tenant_id", data.tenantId).maybeSingle();
     if (!s?.sender_email) throw new Error("Für diese Firma ist keine Absender-Adresse hinterlegt (Admin → Lead-Mailing).");
     const { loadResendConfig, sendViaResend, loadSignature } = await import("@/lib/lead-mailing.server");

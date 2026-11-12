@@ -100,6 +100,23 @@ export function allowedToSendNow(dailyLimit: number, sentToday: number, now: Dat
 
 /** Abmeldewunsch in einer Antwort erkennen. */
 export function isUnsubscribeReply(subject: string, body: string): boolean {
-  const t = `${subject}\n${body.split(/\n>|\nAm .* schrieb/)[0]}`.toLowerCase();
-  return /\b(abmelden|abmeldung|unsubscribe|keine (weiteren )?(e-?mails|nachrichten))\b/.test(t);
+  // Nur der neue Antworttext zählt, kein zitierter Verlauf.
+  const fresh = body.split(/\n\s*>|\n.*(?:schrieb|wrote).*:|\n-{2,}\s*(?:Original|Ursprüngliche)/i)[0];
+  const t = `${subject}\n${fresh}`.toLowerCase();
+  return /\b(bitte\s+(?:abmelden|austragen|löschen\s+sie\s+mich)|abmeldung|unsubscribe|melden\s+sie\s+mich\s+ab|keine\s+weiteren\s+(?:e-?mails|nachrichten)\s+(?:mehr\s+)?(?:senden|schicken|zusenden))\b/.test(t);
+}
+
+/** Nur dauerhafte Rückläufer sperren (Adresse existiert nicht), keine vollen Postfächer. */
+export function isPermanentBounce(bounce: { type?: string | null } | null | undefined): boolean {
+  const t = String(bounce?.type ?? "").toLowerCase();
+  return t === "permanent" || t === "hard";
+}
+
+export const MAIL_BLOCK_PREFIX = "MAIL_BLOCKED:";
+
+export function mailBlockMessage(status: string, error: string | null): string {
+  const why = status === "bounced" ? "Die Adresse existiert nicht (Mail kam dauerhaft zurück)."
+    : error === "email.complained" ? "Die Person hat eine frühere Mail als Spam markiert."
+    : "Die Person hat per Antwort um Abmeldung gebeten.";
+  return `${MAIL_BLOCK_PREFIX} ${why}`;
 }
