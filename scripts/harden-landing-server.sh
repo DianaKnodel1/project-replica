@@ -44,7 +44,11 @@ if command -v apt-get >/dev/null; then
   apt-get update -qq
   apt-get install -y -qq ufw fail2ban unattended-upgrades curl ca-certificates >/dev/null
 elif command -v dnf >/dev/null; then
-  dnf install -y ufw fail2ban unattended-upgrades curl
+  # AlmaLinux/Rocky/RHEL: ufw + fail2ban kommen aus EPEL, Updates via dnf-automatic
+  dnf install -y -q epel-release >/dev/null 2>&1 || true
+  dnf install -y -q ufw fail2ban dnf-automatic curl ca-certificates >/dev/null
+  # firewalld und ufw dürfen nicht gleichzeitig laufen — ufw übernimmt
+  systemctl disable --now firewalld >/dev/null 2>&1 || true
 else
   echo "Weder apt noch dnf gefunden." >&2; exit 1
 fi
@@ -143,11 +147,16 @@ ok "fail2ban sperrt IPs nach 5 Fehlversuchen für 1 h"
 
 # ── 6) Automatische Sicherheitsupdates + Firewall scharf schalten ────────────
 log "6/6 Automatische Updates + ufw aktivieren"
-cat > /etc/apt/apt.conf.d/20auto-upgrades <<'EOF'
+if command -v apt-get >/dev/null; then
+  cat > /etc/apt/apt.conf.d/20auto-upgrades <<'EOF'
 APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Unattended-Upgrade "1";
 EOF
-systemctl enable --now unattended-upgrades >/dev/null 2>&1 || true
+  systemctl enable --now unattended-upgrades >/dev/null 2>&1 || true
+else
+  sed -i 's/^upgrade_type.*/upgrade_type = security/; s/^apply_updates.*/apply_updates = yes/' /etc/dnf/automatic.conf 2>/dev/null || true
+  systemctl enable --now dnf-automatic.timer >/dev/null 2>&1 || true
+fi
 
 ufw default deny incoming >/dev/null
 ufw default allow outgoing >/dev/null
