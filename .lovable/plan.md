@@ -12,18 +12,18 @@ Server A (alles in einem, ca. 15–25 € / Monat)
   - Datenbank und Logins (eigener Backend-Teil)
   - Landing Pages
   - Web-ID
-Backup-Speicher (ca. 4–5 € / Monat)
+Backup-Server, kleiner KVM-VPS (ca. 5–10 € / Monat)
   - holt sich jede Nacht die Daten von Server A
 ```
 
-Geschätzt: **ca. 20–30 € im Monat**, z. B. Hetzner CPX31 (4 Kerne, 8 GB) plus Hetzner Storage Box. Wächst die Instanz, kann man einzelne Teile später wieder auf eigene Server auslagern.
+Geschätzt: **ca. 20–30 € im Monat**, z. B. Hetzner CPX31 (4 Kerne, 8 GB) plus kleiner Backup-VPS (2 GB, 100–200 GB). Wächst die Instanz, kann man einzelne Teile später wieder auf eigene Server auslagern.
 
 ## Schritte
 1. Neue Domain für die zweite Instanz festlegen (z. B. `portal2.de`) und in Cloudflare anlegen.
-2. Server A kaufen (KVM, Ubuntu 24.04 bevorzugt) und Backup-Speicher buchen.
+2. Server A kaufen (KVM, Ubuntu 24.04 bevorzugt) und Backup-VPS kaufen.
 3. Ein Einrichtungs-Skript bauen, das Portal, Backend, Landing-Server und Web-ID zusammen auf einem Server installiert. Die bestehenden Einzel-Skripte werden dafür wiederverwendet.
 4. Leere Datenbank mit allen Tabellen anlegen und den ersten Admin erstellen.
-5. Backup so einstellen, dass der Backup-Speicher die Daten holt (wie bei der ersten Instanz).
+5. Backup so einstellen, dass der Backup-Server die Daten holt (wie bei der ersten Instanz).
 6. Mail-Versand (Resend) und Cloudflare-Schlüssel für die zweite Instanz neu eintragen.
 7. Test: Login, Bewerbung über eine Landing Page, Web-ID-Ablauf, ein Backup und eine Wiederherstellung.
 
@@ -33,7 +33,7 @@ Geschätzt: **ca. 20–30 € im Monat**, z. B. Hetzner CPX31 (4 Kerne, 8 GB) pl
 
 ## Offen / von dir gebraucht
 - Die Domain für die zweite Instanz.
-- Kauf des Servers und des Backup-Speichers.
+- Kauf von Server A und Backup-VPS.
 - Eigener Resend-Zugang oder eigene Absenderdomain für die zweite Instanz.
 
 ## Technische Details
