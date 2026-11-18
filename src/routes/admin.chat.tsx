@@ -1,3 +1,4 @@
+import { compareChats } from "@/lib/chat-sort";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/chat")({
@@ -345,19 +346,7 @@ function AdminChatPage() {
       });
     }
 
-    list.sort((a, b) => {
-      if (a.status === "escalated" && b.status !== "escalated") return -1;
-      if (a.status !== "escalated" && b.status === "escalated") return 1;
-      // Offene Antworten immer oben, älteste zuerst
-      const aOpen = isOpen(a) ? 1 : 0;
-      const bOpen = isOpen(b) ? 1 : 0;
-      if (aOpen !== bOpen) return bOpen - aOpen;
-      if (aOpen && bOpen) return (a.openSince ?? "").localeCompare(b.openSince ?? "");
-      const aFlag = a.unread || a.adminUnread ? 1 : 0;
-      const bFlag = b.unread || b.adminUnread ? 1 : 0;
-      if (aFlag !== bFlag) return bFlag - aFlag;
-      return (b.lastAt ?? "").localeCompare(a.lastAt ?? "");
-    });
+    list.sort(compareChats);
 
     setConversations(list);
     setLoading(false);
@@ -410,7 +399,7 @@ function AdminChatPage() {
       ...c,
       lastSignInAt: map[c.user_id]?.last_sign_in_at ?? c.lastSignInAt ?? null,
       lastSeenAt: map[c.user_id]?.last_seen_at ?? c.lastSeenAt ?? null,
-    })));
+    })).sort(compareChats));
   };
 
   const formatLastActive = (ts?: string | null) => {

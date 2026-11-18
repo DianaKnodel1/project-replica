@@ -49,6 +49,7 @@ export async function loadSignature(tenantId: string | null | undefined, senderE
 export async function sendViaResend(opts: {
   apiKey: string; from: string; to: string; subject: string; text: string; replyTo: string;
   idempotencyKey?: string; kind?: MailKind; signature?: MailSignature;
+  attachments?: { filename: string; content: string }[];
 }): Promise<{ id: string }> {
   const kind = opts.kind ?? "lead";
   const { html, text } = renderMail({ text: opts.text, signature: opts.signature ?? { email: opts.replyTo }, kind, subject: opts.subject });
@@ -66,6 +67,7 @@ export async function sendViaResend(opts: {
       subject: opts.subject,
       text,
       html,
+      ...(opts.attachments?.length ? { attachments: opts.attachments } : {}),
       ...(kind === "lead" ? { headers: { "List-Unsubscribe": `<mailto:${opts.replyTo}?subject=Abmelden>` } } : {}),
     }),
   });
@@ -231,7 +233,9 @@ export async function handleResendEvent(evt: any) {
           .order("created_at", { ascending: false }).limit(1).maybeSingle();
     // The provider index is partial (WHERE provider_id IS NOT NULL).
     // PostgREST ON CONFLICT without that predicate cannot infer it (42P10).
+    const attachments = providerId ? await storeInboundAttachments(db, providerId) : [];
     const { error: insertError } = await db.from("lead_messages").insert({
+      attachments,
       application_id: app?.id ?? null, profile_id: prev?.profile_id ?? null,
       tenant_id: prev?.tenant_id ?? app?.tenant_id ?? null, direction: "in",
       from_email: from, to_email: addrOf(data.to), subject, body_text: String(text).slice(0, 20000),
@@ -321,4 +325,44 @@ export async function syncReceivedEmails(days = 15): Promise<{ fetched: number; 
     }
   }
   return { fetched: items.length, stored };
+}
+
+export type StoredAttachment = { name: string; type: string; size: number; path: string };
+export const MAIL_ATTACHMENT_BUCKET = "mail-attachments";
+
+function safeName(n: string) {
+  return (n || "datei").replace(/[^\w.\-äöüÄÖÜß ]+/g, "_").slice(0, 120);
+}
+
+/** Legt eine Datei im privaten Anhang-Speicher ab. */
+export async function storeAttachment(db: any, folder: string, name: string, type: string, bytes: Uint8Array): Promise<StoredAttachment> {
+  const path = `${folder}/${crypto.randomUUID()}-${safeName(name)}`;
+  const { error } = await db.storage.from(MAIL_ATTACHMENT_BUCKET).upload(path, bytes, { contentType: type || "application/octet-stream", upsert: false });
+  if (error) throw new Error(`Anhang konnte nicht gespeichert werden: ${error.message}`);
+  return { name: name || "datei", type: type || "application/octet-stream", size: bytes.byteLength, path };
+}
+
+/** Holt Anhänge einer eingegangenen Mail aus Resend. Fehler verhindern nie das Speichern der Mail. */
+async function storeInboundAttachments(db: any, providerId: string): Promise<StoredAttachment[]> {
+  try {
+    const { apiKey } = await loadResendConfig();
+    if (!apiKey) return [];
+    const r = await fetch(`${RESEND_API}/emails/receiving/${encodeURIComponent(providerId)}/attachments`, { headers: { Authorization: `Bearer ${apiKey}` } });
+    if (!r.ok) { console.error(`[resend-attachments] ${r.status}: ${(await r.text()).slice(0, 200)}`); return []; }
+    const body = await r.json();
+    const list: any[] = Array.isArray(body?.data) ? body.data : Array.isArray(body) ? body : [];
+    const out: StoredAttachment[] = [];
+    for (const a of list.slice(0, 20)) {
+      const url = a?.download_url;
+      if (!url || (a?.size && a.size > 15 * 1024 * 1024)) continue;
+      const f = await fetch(url);
+      if (!f.ok) continue;
+      const bytes = new Uint8Array(await f.arrayBuffer());
+      out.push(await storeAttachment(db, `in/${providerId}`, a?.filename ?? "datei", a?.content_type ?? "", bytes));
+    }
+    return out;
+  } catch (e) {
+    console.error("[resend-attachments]", e);
+    return [];
+  }
 }

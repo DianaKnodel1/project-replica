@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, PenSquare, Search, RefreshCw, Reply, Send, CheckCheck } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { AttachmentPicker, AttachmentList, type PendingAttachment } from "@/components/mail/MailAttachments";
 import { syncInbox, listMailThreads, getMailThread, setThreadHandled, sendPortalMail } from "@/lib/lead-mailing.functions";
 import { ComposeMailDialog } from "@/components/mail/ComposeMailDialog";
 import { MAIL_BLOCK_PREFIX } from "@/lib/lead-mailing";
@@ -54,6 +55,7 @@ function PostfachPage() {
   const threadFn = useServerFn(getMailThread);
   const handledFn = useServerFn(setThreadHandled);
   const sendFn = useServerFn(sendPortalMail);
+  const [files, setFiles] = useState<PendingAttachment[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
   const [q, setQ] = useState("");
   const [threads, setThreads] = useState<any[] | null>(null);
@@ -126,9 +128,10 @@ function PostfachPage() {
     if (!selected.tenant_id) { toast.error("Diesem Verlauf ist keine Firma zugeordnet. Bitte über „Neue Nachricht“ schreiben."); return; }
     setSending(true);
     try {
-      await sendWithOverride((override) => sendFn({ data: { to: selected.peer, tenantId: selected.tenant_id!, subject, text, profileId: selected.profile_id, applicationId: selected.application_id, override } }));
+      await sendWithOverride((override) => sendFn({ data: { to: selected.peer, tenantId: selected.tenant_id!, subject, text, profileId: selected.profile_id, applicationId: selected.application_id, override, attachments: files.map(({ name, type, data }) => ({ name, type, data })) } }));
       toast.success("Antwort gesendet");
       setText("");
+      setFiles([]);
       await open(selected);
       await load();
     } catch (e: any) { toast.error(e?.message ?? "Senden fehlgeschlagen"); }
@@ -229,6 +232,7 @@ function PostfachPage() {
                       {m.direction === "in" ? (m.kind === "contact" || /^Kontaktanfrage über /.test(String(m.subject ?? "")) ? "Kontaktanfrage" : "Eingang") : "Gesendet"} · {new Date(m.created_at).toLocaleString("de-DE")} · {m.subject}
                     </div>
                     <div className="whitespace-pre-wrap break-words">{m.body_text}</div>
+                    <AttachmentList items={m.attachments} />
                     {m.direction === "out" && (
                       <div className="mt-1 text-xs opacity-80" title="Geöffnet ist ein Anhaltspunkt, kein sicherer Lesebeweis.">
                         {m.bounced_at ? "Unzustellbar" : m.opened_at ? `Geöffnet ${new Date(m.opened_at).toLocaleString("de-DE")}${m.open_count > 1 ? ` (${m.open_count}×)` : ""}` : m.delivered_at ? "Zugestellt" : "Gesendet"}
@@ -240,6 +244,7 @@ function PostfachPage() {
               <div className="space-y-2 border-t border-border pt-3">
                 <Input value={subject} onChange={(e) => setSubject(e.target.value)} />
                 <Textarea rows={6} placeholder="Antwort schreiben … (Signatur wird automatisch angehängt)" value={text} onChange={(e) => setText(e.target.value)} />
+                <AttachmentPicker value={files} onChange={setFiles} />
                 <Button onClick={send} disabled={sending || !text.trim()} className="rounded-full">
                   <span>{sending ? "Wird gesendet …" : "Antwort senden"}</span>
                 </Button>

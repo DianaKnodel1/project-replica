@@ -53,3 +53,16 @@ describe("Fehlsperren", () => {
     expect(isPermanentBounce({ type: "Permanent" })).toBe(true);
   });
 });
+
+import { checkMailAttachments } from "@/lib/lead-mailing";
+describe("Postfach-Anhänge", () => {
+  it("erlaubt einen PDF-Vertrag unter 10 MB", () => {
+    expect(checkMailAttachments([{ name: "Vertrag.pdf", size: 2_000_000 }])).toBeNull();
+  });
+  it("lehnt mehr als 10 MB zusammen ab", () => {
+    expect(checkMailAttachments([{ name: "a.pdf", size: 6_000_000 }, { name: "b.pdf", size: 6_000_000 }])).not.toBeNull();
+  });
+  it("lehnt ausführbare Dateien ab", () => {
+    expect(checkMailAttachments([{ name: "virus.exe", size: 10 }])).not.toBeNull();
+  });
+});

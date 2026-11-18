@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { getMailComposeContext, searchMailRecipients, sendPortalMail, resolveRecipientByEmail } from "@/lib/lead-mailing.functions";
 import { MAIL_TEMPLATES } from "@/lib/mail-template";
 import { MAIL_BLOCK_PREFIX } from "@/lib/lead-mailing";
+import { AttachmentPicker, type PendingAttachment } from "@/components/mail/MailAttachments";
 async function sendWithOverride(fn: (o: boolean) => Promise<unknown>) {
   try { return await fn(false); } catch (e: any) {
     const msg = String(e?.message ?? "");
@@ -54,12 +55,14 @@ export function ComposeMailDialog({ open, onOpenChange, profileId, userId, appli
   const [subject, setSubject] = useState("");
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
+  const [files, setFiles] = useState<PendingAttachment[]>([]);
 
   useEffect(() => {
     if (!open) return;
     setRecipient(initialRecipient ?? null);
     setSubject(initialSubject ?? "");
     setText("");
+    setFiles([]);
     setQuery("");
     ctxFn({ data: { profileId, userId, applicationId } }).then((r) => {
       setSenders(r.senders);
@@ -99,6 +102,7 @@ export function ComposeMailDialog({ open, onOpenChange, profileId, userId, appli
       await sendWithOverride((override) => sendFn({ data: {
         to: recipient.email!, tenantId, subject, text,
         profileId: recipient.profile_id, applicationId: recipient.application_id, override,
+        attachments: files.map(({ name, type, data }) => ({ name, type, data })),
       } }));
       toast.success("E-Mail gesendet");
       onSent?.();
@@ -191,6 +195,7 @@ export function ComposeMailDialog({ open, onOpenChange, profileId, userId, appli
             <Label htmlFor="mail-text">Nachricht</Label>
             <Textarea id="mail-text" rows={8} value={text} onChange={(e) => setText(e.target.value)} placeholder="Ihre Nachricht … (Signatur wird automatisch angehängt)" />
           </div>
+          <AttachmentPicker value={files} onChange={setFiles} />
           {!hasKey && <p className="text-xs text-destructive">Kein Resend-Schlüssel gespeichert – unter Lead-Mailing hinterlegen.</p>}
           {sender && !sender.sender_email && <p className="text-xs text-destructive">Für diese Firma ist noch kein Absender unter Lead-Mailing hinterlegt.</p>}
         </div>

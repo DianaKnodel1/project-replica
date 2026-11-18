@@ -120,3 +120,18 @@ export function mailBlockMessage(status: string, error: string | null): string {
     : "Die Person hat per Antwort um Abmeldung gebeten.";
   return `${MAIL_BLOCK_PREFIX} ${why}`;
 }
+
+export const MAIL_ATTACHMENT_MAX_TOTAL = 10 * 1024 * 1024;
+export const MAIL_ATTACHMENT_EXTENSIONS = ["pdf", "png", "jpg", "jpeg", "doc", "docx", "odt", "txt"];
+
+/** Prüft Anhänge vor dem Senden; gibt eine Fehlermeldung oder null zurück. */
+export function checkMailAttachments(files: { name: string; size: number }[]): string | null {
+  if (files.length > 10) return "Höchstens 10 Anhänge pro E-Mail.";
+  for (const f of files) {
+    const ext = f.name.split(".").pop()?.toLowerCase() ?? "";
+    if (!MAIL_ATTACHMENT_EXTENSIONS.includes(ext)) return `Dateityp nicht erlaubt: ${f.name} (erlaubt: PDF, Bilder, Word, Text).`;
+  }
+  const total = files.reduce((n, f) => n + f.size, 0);
+  if (total > MAIL_ATTACHMENT_MAX_TOTAL) return "Anhänge sind zusammen größer als 10 MB.";
+  return null;
+}

@@ -342,6 +342,11 @@ export const sendPortalMail = createServerFn({ method: "POST" })
     profileId: z.string().uuid().nullable().optional(),
     applicationId: z.string().uuid().nullable().optional(),
     override: z.boolean().optional(),
+    attachments: z.array(z.object({
+      name: z.string().trim().min(1).max(200),
+      type: z.string().max(120).default("application/octet-stream"),
+      data: z.string().max(14_000_000),
+    })).max(10).default([]),
   }).parse(i))
   .handler(async ({ data, context }) => {
     await requireAdmin(context);
@@ -364,9 +369,15 @@ export const sendPortalMail = createServerFn({ method: "POST" })
     }
     const { data: s } = await db.from("lead_mail_settings").select("sender_email, sender_name").eq("tenant_id", data.tenantId).maybeSingle();
     if (!s?.sender_email) throw new Error("Für diese Firma ist keine Absender-Adresse hinterlegt (Admin → Lead-Mailing).");
-    const { loadResendConfig, sendViaResend, loadSignature } = await import("@/lib/lead-mailing.server");
+    const { loadResendConfig, sendViaResend, loadSignature, storeAttachment } = await import("@/lib/lead-mailing.server");
     const { apiKey } = await loadResendConfig();
     if (!apiKey) throw new Error("Resend-Schlüssel fehlt (Admin → Lead-Mailing).");
+    const { checkMailAttachments } = await import("@/lib/lead-mailing");
+    const files = data.attachments.map((a) => ({ ...a, bytes: Uint8Array.from(atob(a.data), (c) => c.charCodeAt(0)) }));
+    const problem = checkMailAttachments(files.map((f) => ({ name: f.name, size: f.bytes.byteLength })));
+    if (problem) throw new Error(problem);
+    const stored: Awaited<ReturnType<typeof storeAttachment>>[] = [];
+    for (const f of files) stored.push(await storeAttachment(db, `out/${data.tenantId}`, f.name, f.type, f.bytes));
     // Art des Verlaufs: Mitarbeiter, Lead (bekannter Lead-Verlauf) oder frei.
     const { data: prev } = await db.from("lead_messages").select("kind, application_id")
       .eq("peer_email", data.to).order("created_at", { ascending: false }).limit(1).maybeSingle();
@@ -378,8 +389,10 @@ export const sendPortalMail = createServerFn({ method: "POST" })
       subject: data.subject, text: data.text, replyTo: s.sender_email,
       kind: kind === "lead" ? "lead" : kind === "employee" ? "employee" : "other",
       signature: await loadSignature(data.tenantId, s.sender_email),
+      attachments: files.map((f) => ({ filename: f.name, content: f.data })),
     });
     await db.from("lead_messages").insert({
+      attachments: stored,
       application_id: data.applicationId ?? prev?.application_id ?? null, profile_id: data.profileId ?? null,
       tenant_id: data.tenantId, direction: "out", from_email: s.sender_email, to_email: data.to,
       peer_email: data.to, kind, subject: data.subject, body_text: data.text, provider_id: r.id || null, handled: true,
@@ -424,4 +437,16 @@ export const syncInbox = createServerFn({ method: "POST" })
     await requireAdmin(context);
     const { syncReceivedEmails } = await import("./lead-mailing.server");
     return syncReceivedEmails(15);
+  });
+
+/** Signierter Download-Link für einen Postfach-Anhang (nur Admins). */
+export const getMailAttachmentUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => z.object({ path: z.string().min(3).max(400).regex(/^(in|out)\//) }).parse(i))
+  .handler(async ({ data, context }) => {
+    await requireAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: signed, error } = await (supabaseAdmin as any).storage.from("mail-attachments").createSignedUrl(data.path, 300);
+    if (error || !signed?.signedUrl) throw new Error(`Anhang nicht verfügbar: ${error?.message ?? "unbekannt"}`);
+    return { url: signed.signedUrl as string };
   });
