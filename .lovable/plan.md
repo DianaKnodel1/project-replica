@@ -1,43 +1,16 @@
-# Zweite Portal-Instanz – günstig und komplett getrennt
+# Chat-Liste: Aktive oben, Inaktive unten
 
-## Ziel
-Eine zweite, völlig eigene Kopie von Portal, Landing Pages, Web-ID und Backup. Eigene Daten, eigene Logins, eigene Domain. Kosten deutlich unter den heutigen 200 € im Monat.
+## Was sich ändert
+Die Chat-Liste wird danach sortiert, wann der Mitarbeiter zuletzt im Portal aktiv war (die Anzeige „Aktiv vor X Min“):
+- Ganz oben: wer gerade bzw. zuletzt aktiv war.
+- Danach absteigend nach „zuletzt aktiv“.
+- Ganz unten: wer lange nicht oder noch nie aktiv war, sowie gesperrte Mitarbeiter.
 
-## Idee: Weniger Server, gleiche Programme
-Heute läuft jeder Teil auf einem eigenen Server. Für den Start der zweiten Instanz reicht es, alles auf **einen** stärkeren Server zu legen. Nur das Backup bleibt getrennt, damit es bei einem Ausfall sicher ist.
+Eskalierte Chats und Chats mit offener Antwort bleiben trotzdem ganz oben, damit nichts übersehen wird. Darunter gilt die neue Reihenfolge.
 
-```text
-Server A (alles in einem, ca. 15–25 € / Monat)
-  - Portal (Admin + Mitarbeiter)
-  - Datenbank und Logins (eigener Backend-Teil)
-  - Landing Pages
-  - Web-ID
-Backup-Server, kleiner KVM-VPS (ca. 5–10 € / Monat)
-  - holt sich jede Nacht die Daten von Server A
-```
-
-Geschätzt: **ca. 20–30 € im Monat**, z. B. Hetzner CPX31 (4 Kerne, 8 GB) plus kleiner Backup-VPS (2 GB, 100–200 GB). Wächst die Instanz, kann man einzelne Teile später wieder auf eigene Server auslagern.
-
-## Schritte
-1. Neue Domain für die zweite Instanz festlegen (z. B. `portal2.de`) und in Cloudflare anlegen.
-2. Server A kaufen (KVM, Ubuntu 24.04 bevorzugt) und Backup-VPS kaufen.
-3. Ein Einrichtungs-Skript bauen, das Portal, Backend, Landing-Server und Web-ID zusammen auf einem Server installiert. Die bestehenden Einzel-Skripte werden dafür wiederverwendet.
-4. Leere Datenbank mit allen Tabellen anlegen und den ersten Admin erstellen.
-5. Backup so einstellen, dass der Backup-Server die Daten holt (wie bei der ersten Instanz).
-6. Mail-Versand (Resend) und Cloudflare-Schlüssel für die zweite Instanz neu eintragen.
-7. Test: Login, Bewerbung über eine Landing Page, Web-ID-Ablauf, ein Backup und eine Wiederherstellung.
-
-## Was gleich bleibt
-- Beide Instanzen bekommen Updates aus demselben Programm-Code. Ein Update spielst du einfach auf beiden ein.
-- Die erste Instanz wird dabei nicht angefasst.
-
-## Offen / von dir gebraucht
-- Die Domain für die zweite Instanz.
-- Kauf von Server A und Backup-VPS.
-- Eigener Resend-Zugang oder eigene Absenderdomain für die zweite Instanz.
+Die Reiter „Aktiv“ und „Ausgeblendet“ und alle Filter bleiben wie sie sind.
 
 ## Technische Details
-- Neues Skript `scripts/setup-all-in-one.sh` ruft die vorhandenen Setup-Teile nacheinander auf, mit getrennten Ports und einem gemeinsamen Caddy für alle Domains.
-- Pro Instanz eigene `.env.server` mit eigenen Schlüsseln; keine geteilten Datenbanken oder Tokens.
-- Backup-Orchestrator bekommt die zweite Instanz als eigenes Ziel; Archivaufbau bleibt gleich, damit `restore.sh` funktioniert.
-- Deploy-Skript bekommt eine Option für die All-in-one-Variante.
+- In `src/routes/admin.chat.tsx` die Sortierung nach dem Laden von `last_seen_at` (refreshActivity) anwenden, nicht nur beim ersten Laden.
+- Reihenfolge: eskaliert → offene Antwort → `last_seen_at` absteigend → ohne Wert bzw. gesperrt am Ende.
+- Kleiner Test für die Sortierregel in `src/test/`.
