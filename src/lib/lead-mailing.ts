@@ -135,3 +135,19 @@ export function checkMailAttachments(files: { name: string; size: number }[]): s
   if (total > MAIL_ATTACHMENT_MAX_TOTAL) return "Anhänge sind zusammen größer als 10 MB.";
   return null;
 }
+
+/** Ordnet gesendete Mails Personen zu – über Bewerbungs-/Profil-ID und E-Mail-Adresse. */
+export type MailPerson = { id: string; ids: string[]; emails: string[] };
+export function matchMailsToPeople<T extends { id: string; created_at: string; application_id?: string | null; profile_id?: string | null; peer_email?: string | null }>(rows: T[], people: MailPerson[]) {
+  const sorted = [...rows].sort((a, b) => b.created_at.localeCompare(a.created_at));
+  const latest: Record<string, T> = {};
+  const byPerson: Record<string, T[]> = {};
+  for (const p of people) {
+    const ids = new Set(p.ids.filter(Boolean));
+    const emails = new Set(p.emails.filter(Boolean).map((e) => e.toLowerCase()));
+    const list = sorted.filter((m) => (m.application_id && ids.has(m.application_id)) || (m.profile_id && ids.has(m.profile_id)) || (m.peer_email && emails.has(m.peer_email.toLowerCase())));
+    byPerson[p.id] = list;
+    if (list[0]) latest[p.id] = list[0];
+  }
+  return { latest, byPerson };
+}

@@ -35,9 +35,9 @@ export const Route = createFileRoute("/admin/postfach")({
   component: PostfachPage,
 });
 
-type Filter = "all" | "mail" | "contact" | "lead" | "employee" | "unread";
+type Filter = "all" | "sent" | "mail" | "contact" | "lead" | "employee" | "unread";
 const FILTERS: { id: Filter; label: string }[] = [
-  { id: "all", label: "Alle" }, { id: "mail", label: "E-Mails" }, { id: "contact", label: "Kontaktanfragen" },
+  { id: "all", label: "Alle" }, { id: "sent", label: "Gesendet" }, { id: "mail", label: "E-Mails" }, { id: "contact", label: "Kontaktanfragen" },
   { id: "lead", label: "Leads" }, { id: "employee", label: "Mitarbeiter" }, { id: "unread", label: "Ungelesen" },
 ];
 function ago(iso: string) {
@@ -181,7 +181,7 @@ function PostfachPage() {
             {threads === null && <div className="p-4"><Loader2 className="h-4 w-4 animate-spin" /></div>}
             {threads?.length === 0 && <div className="p-4 text-sm text-muted-foreground">Keine Nachrichten.</div>}
             {threads?.map((t) => (
-              <button type="button" key={t.peer} onClick={() => open(t)}
+              <button type="button" key={t.message_id ?? t.peer} onClick={() => open(t)}
                 className={`block w-full min-w-0 text-left p-3.5 hover:bg-accent ${selected?.peer === t.peer ? "bg-accent" : ""}`}>
                 <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2">
                   <span className={`h-2 w-2 rounded-full ${t.unread ? "bg-primary" : "bg-transparent"}`} />

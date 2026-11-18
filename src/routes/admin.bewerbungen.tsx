@@ -274,7 +274,7 @@ function AdminBewerbungenPage() {
     if (!appIdsKey) return;
     loadMailStatuses({ data: { applicationIds: appIdsKey.split(","), profileIds: [] } })
       .then((r) => setMailById(r.latest)).catch(() => {});
-  }, [appIdsKey]);
+  }, [appIdsKey, mailAppId]);
 
   const [landingById, setLandingById] = useState<Map<string, { slug: string; firmenname: string | null }>>(new Map());
   useEffect(() => {

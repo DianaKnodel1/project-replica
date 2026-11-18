@@ -1,3 +1,4 @@
+import { matchMailsToPeople, type MailPerson } from "@/lib/lead-mailing";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
@@ -158,7 +159,7 @@ const peerOf = (m: any) => String(m.peer_email || (m.direction === "in" ? m.from
 export const listMailThreads = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => z.object({
-    filter: z.enum(["all", "mail", "contact", "lead", "employee", "unread"]).default("all"),
+    filter: z.enum(["all", "sent", "mail", "contact", "lead", "employee", "unread"]).default("all"),
     q: z.string().trim().max(120).default(""),
   }).parse(i ?? {}))
   .handler(async ({ data, context }) => {
@@ -212,6 +213,15 @@ export const listMailThreads = createServerFn({ method: "POST" })
       last_direction: t.last.direction, last_opened: !!t.last.opened_at, last_at: t.last.created_at,
     }));
     const unreadTotal = allThreads.filter((t) => t.unread > 0).length;
+    if (data.filter === "sent") {
+      const byPeer = new Map(allThreads.map((t) => [t.peer, t]));
+      const sent = rows.filter((m) => m.direction === "out").map((m) => {
+        const t: any = byPeer.get(peerOf(m)) ?? {};
+        return { ...t, peer: peerOf(m), name: t.name ?? peerOf(m), unread: 0, subject: m.subject, preview: String(m.body_text ?? "").slice(0, 140),
+          last_direction: "out", last_opened: !!m.opened_at, last_at: m.created_at, message_id: m.id };
+      }).filter((t) => !q || String(t.name).toLowerCase().includes(q) || t.peer.includes(q)).slice(0, 500);
+      return { threads: sent, unreadTotal };
+    }
     const out = allThreads.filter((t) =>
       (data.filter === "all" || (data.filter === "unread" ? t.unread > 0
         : data.filter === "contact" ? t.contact
@@ -413,21 +423,53 @@ export const getMailStatuses = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const db = supabaseAdmin as any;
     const cols = "id, application_id, profile_id, peer_email, subject, created_at, delivered_at, opened_at, open_count, bounced_at";
-    const rows: any[] = [];
-    for (const [col, ids] of [["application_id", data.applicationIds], ["profile_id", data.profileIds]] as const) {
-      for (let i = 0; i < ids.length; i += 100) {
-        const { data: r, error } = await db.from("lead_messages").select(cols)
-          .eq("direction", "out").in(col, ids.slice(i, i + 100)).order("created_at", { ascending: false }).limit(2000);
-        if (error) throw new Error(error.message);
-        rows.push(...(r ?? []));
-      }
+    const chunks = <T,>(arr: T[]) => { const out: T[][] = []; for (let i = 0; i < arr.length; i += 100) out.push(arr.slice(i, i + 100)); return out; };
+    // Personen-Verknüpfung: Bewerbung <-> Mitarbeiterprofil, plus E-Mail-Adressen der Bewerbungen.
+    const apps: any[] = []; const profs: any[] = [];
+    for (const c of chunks(data.applicationIds)) {
+      const [{ data: a }, { data: p }] = await Promise.all([
+        db.from("applications").select("id, email, user_id").in("id", c),
+        db.from("profiles").select("id, application_id").in("application_id", c),
+      ]);
+      apps.push(...(a ?? [])); profs.push(...(p ?? []));
     }
-    const latest: Record<string, any> = {};
-    for (const m of rows) {
-      for (const k of [m.application_id, m.profile_id]) if (k && !latest[k]) latest[k] = m;
+    for (const c of chunks(data.profileIds)) {
+      const [{ data: p }, { data: a }] = await Promise.all([
+        db.from("profiles").select("id, application_id").in("id", c),
+        db.from("applications").select("id, email, user_id").in("user_id", c),
+      ]);
+      profs.push(...(p ?? [])); apps.push(...(a ?? []));
     }
+    const extraAppIds = profs.map((p) => p.application_id).filter((id) => id && !apps.some((a) => a.id === id));
+    for (const c of chunks([...new Set(extraAppIds)] as string[])) {
+      const { data: a } = await db.from("applications").select("id, email, user_id").in("id", c);
+      apps.push(...(a ?? []));
+    }
+    const people: MailPerson[] = [];
+    const personFor = (appIds: string[], profIds: string[]) => {
+      const ids = new Set<string>([...appIds, ...profIds]);
+      for (const p of profs) if (ids.has(p.id) || (p.application_id && ids.has(p.application_id))) { ids.add(p.id); if (p.application_id) ids.add(p.application_id); }
+      for (const a of apps) if (ids.has(a.id) || (a.user_id && ids.has(a.user_id))) { ids.add(a.id); if (a.user_id) ids.add(a.user_id); }
+      const emails = apps.filter((a) => ids.has(a.id) && a.email).map((a) => String(a.email).toLowerCase());
+      return { ids: [...ids], emails };
+    };
+    for (const id of data.applicationIds) people.push({ id, ...personFor([id], []) });
+    for (const id of data.profileIds) people.push({ id, ...personFor([], [id]) });
+    const allIds = [...new Set(people.flatMap((p) => p.ids))];
+    const allEmails = [...new Set(people.flatMap((p) => p.emails))];
+    const rows: any[] = []; const seenRow = new Set<string>();
+    const add = (r: any[] | null) => { for (const m of r ?? []) if (!seenRow.has(m.id)) { seenRow.add(m.id); rows.push(m); } };
+    for (const col of ["application_id", "profile_id"]) for (const c of chunks(allIds)) {
+      const { data: r, error } = await db.from("lead_messages").select(cols).eq("direction", "out").in(col, c).order("created_at", { ascending: false }).limit(2000);
+      if (error) throw new Error(error.message); add(r);
+    }
+    for (const c of chunks(allEmails)) {
+      const { data: r, error } = await db.from("lead_messages").select(cols).eq("direction", "out").in("peer_email", c).order("created_at", { ascending: false }).limit(2000);
+      if (error) throw new Error(error.message); add(r);
+    }
+    const { latest, byPerson } = matchMailsToPeople(rows, people);
     const seen = new Set<string>();
-    const all = data.full ? rows.filter((m) => !seen.has(m.id) && seen.add(m.id)).sort((a, b) => b.created_at.localeCompare(a.created_at)) : [];
+    const all = data.full ? Object.values(byPerson).flat().filter((m: any) => !seen.has(m.id) && seen.add(m.id)).sort((a: any, b: any) => b.created_at.localeCompare(a.created_at)) : [];
     return { latest, all };
   });
 
