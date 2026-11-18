@@ -443,7 +443,7 @@ function PersonalDataPage() {
         </CardContent>
       </Card>
 
-      <div className="sticky bottom-4 z-10">
+      <div className="sm:sticky sm:bottom-4 z-10">
         <Card className="border-primary/30 shadow-elegant">
           <CardContent className="p-4 flex items-center justify-between gap-4">
             <div className="text-xs text-muted-foreground">

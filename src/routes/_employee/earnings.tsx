@@ -158,7 +158,7 @@ function EarningsPage() {
         </Card>
         <Card className="hover:shadow-sm transition-all">
           <CardContent className="pt-4 pb-4 text-center">
-            <Banknote className="h-5 w-5 text-accent mx-auto mb-1.5" />
+            <Banknote className="h-5 w-5 text-primary mx-auto mb-1.5" />
             <p className="text-lg font-bold text-foreground">{paidAmount.toFixed(2)} €</p>
             <p className="text-[11px] text-muted-foreground">Erhalten</p>
           </CardContent>
