@@ -1,16 +1,22 @@
-# Chat-Liste: Aktive oben, Inaktive unten
+# Postfach-Anhänge, Chat-Sortierung, Handy-Ansicht
 
-## Was sich ändert
-Die Chat-Liste wird danach sortiert, wann der Mitarbeiter zuletzt im Portal aktiv war (die Anzeige „Aktiv vor X Min“):
-- Ganz oben: wer gerade bzw. zuletzt aktiv war.
-- Danach absteigend nach „zuletzt aktiv“.
-- Ganz unten: wer lange nicht oder noch nie aktiv war, sowie gesperrte Mitarbeiter.
+## 1. Anhänge im Postfach (zuerst)
+Heute kann das Postfach weder Anhänge senden noch empfangene Anhänge zeigen.
+- **Senden:** Im Fenster „Neue Mail“ und beim Antworten gibt es einen Knopf „Datei anhängen“ (PDF, Bilder, Word; bis 10 MB pro Mail). So kannst du z. B. den Vertrag als PDF verschicken.
+- **Empfangen:** Kommt eine Mail mit Anhang an, erscheint er unter der Nachricht zum Öffnen und Herunterladen.
+- Jede Mail mit Anhang bleibt wie bisher im Verlauf der Person gespeichert.
 
-Eskalierte Chats und Chats mit offener Antwort bleiben trotzdem ganz oben, damit nichts übersehen wird. Darunter gilt die neue Reihenfolge.
+## 2. Chat-Liste: Aktive oben, Inaktive unten
+- Sortierung nach „zuletzt aktiv“: wer gerade aktiv war oben, wer lange oder nie aktiv war bzw. gesperrt ist unten.
+- Eskalierte Chats und Chats mit offener Antwort bleiben ganz oben.
 
-Die Reiter „Aktiv“ und „Ausgeblendet“ und alle Filter bleiben wie sie sind.
+## 3. Handy-Ansicht
+- Zuerst die wichtigsten Seiten auf dem Handy prüfen (Login, Dashboard, Chat, Postfach, Mitarbeiter, Bewerber) und Screenshots machen.
+- Dann die schlimmsten Stellen beheben: abgeschnittene Tabellen, zu breite Zeilen, Knöpfe übereinander, zu kleine Schrift.
+- Danach zeige ich dir eine Liste mit Vorher/Nachher.
 
 ## Technische Details
-- In `src/routes/admin.chat.tsx` die Sortierung nach dem Laden von `last_seen_at` (refreshActivity) anwenden, nicht nur beim ersten Laden.
-- Reihenfolge: eskaliert → offene Antwort → `last_seen_at` absteigend → ohne Wert bzw. gesperrt am Ende.
-- Kleiner Test für die Sortierregel in `src/test/`.
+- Anhänge senden: Dateien als base64 an `sendPortalMail` übergeben und an Resend `attachments` weiterreichen; Größe und Dateityp serverseitig prüfen. Speicherung in einem privaten Storage-Bucket, Verweis an `lead_messages` (neue Spalte `attachments` jsonb).
+- Anhänge empfangen: im Resend-Inbound-Webhook bzw. Receiving-Sync die Anhänge abrufen, in denselben Bucket legen und verlinken; Download nur für Admins über signierte Links.
+- Chat-Sortierung in `src/routes/admin.chat.tsx` nach `refreshActivity` anwenden, mit kleinem Test der Regel.
+- Handy: Prüfung mit 390 px Breite; Tabellen auf Karten bzw. horizontales Scrollen umstellen, Kopfzeilen nach dem Grid-Muster mit `min-w-0`/`shrink-0`.
