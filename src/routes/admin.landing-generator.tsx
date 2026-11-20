@@ -845,7 +845,7 @@ document.addEventListener('submit', function(e){
       const r: any = row;
 
       const dnsLabel = r.dnsStatus === "auto" ? "DNS automatisch gesetzt" : r.dnsStatus === "manual" ? "DNS-Hinweis (kein Fehler)" : r.dnsStatus === "skipped" ? "Kein Server im Pool" : "DNS-Fehler";
-      const serverLabel = r.assignedServer ? `Server: ${r.assignedServer.name}` : "Kein Server zugewiesen";
+      const serverLabel = r.assignedServer ? `${(r as any).movedFrom ? `Umgezogen von ${(r as any).movedFrom} (nicht erreichbar) auf ` : "Server: "}${r.assignedServer.name}` : "Kein Server zugewiesen";
       const isHardError = r.dnsStatus === "error";
       toast({
         title: `Landing gespeichert — ${dnsLabel}`,

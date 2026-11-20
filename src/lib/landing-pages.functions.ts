@@ -1,3 +1,4 @@
+import { isServerAlive, pickAliveServer } from "./landing-server-health";
 // CRUD für public.landing_pages.
 // Werden vom Admin-UI (/admin/landing-generator) aufgerufen.
 // Server 1 (Landing-Renderer) liest direkt mit anon-Key — braucht keine Server-Fn.
@@ -303,6 +304,23 @@ export const saveLandingPage = createServerFn({ method: "POST" })
       }
     }
 
+    // ── Failover: liegt eine bestehende Landing auf einem toten Server, beim Speichern auf einen lebenden umziehen.
+    let movedFrom: string | null = null;
+    if (data.id) {
+      const { data: cur } = await context.supabase.from("landing_pages")
+        .select("server_id, landing_servers(id, name, status, last_heartbeat_at, landing_count, capacity)").eq("id", data.id).maybeSingle();
+      const curServer = (cur as any)?.landing_servers ?? null;
+      if (!isServerAlive(curServer)) {
+        const { data: pool } = await context.supabase.from("landing_servers")
+          .select("id, name, ip, status, last_heartbeat_at, landing_count, capacity");
+        const next = pickAliveServer((pool ?? []) as any[], (cur as any)?.server_id);
+        if (next) {
+          payload.server_id = next.id;
+          movedFrom = curServer?.name ?? null;
+        }
+      }
+    }
+
     let row: any;
     if (data.id) {
       const { data: updated, error } = await context.supabase
@@ -454,11 +472,11 @@ export const saveLandingPage = createServerFn({ method: "POST" })
       target: domain,
       status: (dnsStatus === "error" || portalDnsStatus === "error") ? "warn" : "ok",
       actor_id: context.userId,
-      payload: { slug, server: assignedServer?.name ?? null, dns: dnsStatus, dnsMessage, portal_host: portalHost, portal_dns: portalDnsStatus, portal_dns_message: portalDnsMessage },
+      payload: { slug, server: assignedServer?.name ?? null, moved_from: movedFrom, dns: dnsStatus, dnsMessage, portal_host: portalHost, portal_dns: portalDnsStatus, portal_dns_message: portalDnsMessage },
       error: dnsStatus === "error" ? dnsMessage : (portalDnsStatus === "error" ? portalDnsMessage : null),
     });
 
-    return { ...row, assignedServer, dnsStatus, dnsMessage, portalHost, portalDnsStatus, portalDnsMessage };
+    return { ...row, assignedServer, movedFrom, dnsStatus, dnsMessage, portalHost, portalDnsStatus, portalDnsMessage };
   });
 
 // ── Cloudflare-DNS-Helper ─────────────────────────────────────────────────
