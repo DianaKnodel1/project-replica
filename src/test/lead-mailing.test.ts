@@ -66,3 +66,13 @@ describe("Postfach-Anhänge", () => {
     expect(checkMailAttachments([{ name: "virus.exe", size: 10 }])).not.toBeNull();
   });
 });
+
+import { normalizeMailAddress, resolveTenantFromRecipient } from "@/lib/lead-mailing";
+describe("Firmen-Zuordnung eingehender Mails", () => {
+  const senders = [{ tenant_id: "bcu", sender_email: "info@bcu-beratung.com" }, { tenant_id: "x", sender_email: "a@other.de" }];
+  it("googlemail gilt als gmail", () => expect(normalizeMailAddress("Bieri@GoogleMail.com")).toBe("bieri@gmail.com"));
+  it("Subdomain der Empfängeradresse ergibt die Firma", () =>
+    expect(resolveTenantFromRecipient(["info@bewerbung.bcu-beratung.com"], senders)).toBe("bcu"));
+  it("unbekannte Empfängeradresse ergibt keine Firma", () =>
+    expect(resolveTenantFromRecipient(["x@fremd.de"], senders)).toBeNull());
+});

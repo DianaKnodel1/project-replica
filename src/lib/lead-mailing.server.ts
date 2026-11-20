@@ -1,4 +1,5 @@
 // Serverseitiger Lead-Versand über Resend + Verarbeitung der Resend-Webhooks.
+import { mailAddressVariants, resolveTenantFromRecipient } from "./lead-mailing";
 import {
   allowedToSendNow,
   renderLeadTemplate,
@@ -223,21 +224,25 @@ export async function handleResendEvent(evt: any) {
         text = full?.text || (full?.html ? String(full.html).replace(/<[^>]+>/g, " ") : "");
       }
     }
-    // Zuordnung: zuerst bestehender Verlauf mit dieser Adresse (Mitarbeiter, frei), sonst Lead.
+    // Zuordnung: bestehender Verlauf (auch gmail/googlemail), sonst Bewerbung/Profil, Firma zusätzlich über Empfängeradresse.
+    const variants = mailAddressVariants(from);
     const { data: prev } = await db
       .from("lead_messages").select("application_id, profile_id, tenant_id, kind")
-      .eq("peer_email", from).eq("direction", "out").order("created_at", { ascending: false }).limit(1).maybeSingle();
+      .in("peer_email", variants).eq("direction", "out").order("created_at", { ascending: false }).limit(1).maybeSingle();
     const { data: app } = prev
       ? { data: prev.application_id ? { id: prev.application_id, tenant_id: prev.tenant_id } : null }
-      : await db.from("applications").select("id, tenant_id").ilike("email", from).not("lead_source", "is", null)
+      : await db.from("applications").select("id, tenant_id, lead_source").or(variants.map((v) => `email.ilike.${v}`).join(","))
           .order("created_at", { ascending: false }).limit(1).maybeSingle();
+    const { data: senders } = await db.from("lead_mail_settings").select("tenant_id, sender_email");
+    const toList = (Array.isArray(data.to) ? data.to : [data.to]).map(addrOf);
+    const recipientTenant = resolveTenantFromRecipient(toList, senders ?? []);
     // The provider index is partial (WHERE provider_id IS NOT NULL).
     // PostgREST ON CONFLICT without that predicate cannot infer it (42P10).
     const attachments = providerId ? await storeInboundAttachments(db, providerId) : [];
     const { error: insertError } = await db.from("lead_messages").insert({
       attachments,
       application_id: app?.id ?? null, profile_id: prev?.profile_id ?? null,
-      tenant_id: prev?.tenant_id ?? app?.tenant_id ?? null, direction: "in",
+      tenant_id: prev?.tenant_id ?? recipientTenant ?? app?.tenant_id ?? null, direction: "in",
       from_email: from, to_email: addrOf(data.to), subject, body_text: String(text).slice(0, 20000),
       provider_id: providerId || null, handled: false, peer_email: from,
       ...(data.created_at ? { created_at: String(data.created_at) } : {}),

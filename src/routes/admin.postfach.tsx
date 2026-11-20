@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Loader2, PenSquare, Search, RefreshCw, Reply, Send, CheckCheck } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { AttachmentPicker, AttachmentList, type PendingAttachment } from "@/components/mail/MailAttachments";
-import { syncInbox, listMailThreads, getMailThread, setThreadHandled, sendPortalMail } from "@/lib/lead-mailing.functions";
+import { syncInbox, listMailThreads, getMailThread, setThreadHandled, sendPortalMail, getMailComposeContext } from "@/lib/lead-mailing.functions";
 import { ComposeMailDialog } from "@/components/mail/ComposeMailDialog";
 import { MAIL_BLOCK_PREFIX } from "@/lib/lead-mailing";
 async function sendWithOverride(fn: (o: boolean) => Promise<unknown>) {
@@ -56,6 +56,10 @@ function PostfachPage() {
   const handledFn = useServerFn(setThreadHandled);
   const sendFn = useServerFn(sendPortalMail);
   const [files, setFiles] = useState<PendingAttachment[]>([]);
+  const ctxFn = useServerFn(getMailComposeContext);
+  const [senders, setSenders] = useState<{ tenant_id: string; name: string }[]>([]);
+  const [pickTenant, setPickTenant] = useState("");
+  useEffect(() => { ctxFn({ data: {} }).then((r: any) => setSenders(r.senders ?? [])).catch(() => {}); }, [ctxFn]);
   const [filter, setFilter] = useState<Filter>("all");
   const [q, setQ] = useState("");
   const [threads, setThreads] = useState<any[] | null>(null);
@@ -119,16 +123,18 @@ function PostfachPage() {
     setSelected(t);
     setSubject(t.subject?.startsWith("Re:") ? t.subject : `Re: ${t.subject ?? "Ihre Nachricht"}`);
     setText("");
+    setPickTenant("");
     const r = await threadFn({ data: { peer: t.peer } });
     setMessages(r.messages);
   };
 
   const send = async () => {
     if (!selected) return;
-    if (!selected.tenant_id) { toast.error("Diesem Verlauf ist keine Firma zugeordnet. Bitte über „Neue Nachricht“ schreiben."); return; }
+    const tenantId = selected.tenant_id ?? pickTenant;
+    if (!tenantId) { toast.error("Bitte zuerst die Firma wählen, über die geantwortet wird."); return; }
     setSending(true);
     try {
-      await sendWithOverride((override) => sendFn({ data: { to: selected.peer, tenantId: selected.tenant_id!, subject, text, profileId: selected.profile_id, applicationId: selected.application_id, override, attachments: files.map(({ name, type, data }) => ({ name, type, data })) } }));
+      await sendWithOverride((override) => sendFn({ data: { to: selected.peer, tenantId, subject, text, profileId: selected.profile_id, applicationId: selected.application_id, override, attachments: files.map(({ name, type, data }) => ({ name, type, data })) } }));
       toast.success("Antwort gesendet");
       setText("");
       setFiles([]);
@@ -244,6 +250,12 @@ function PostfachPage() {
               <div className="space-y-2 border-t border-border pt-3">
                 <Input value={subject} onChange={(e) => setSubject(e.target.value)} />
                 <Textarea rows={6} placeholder="Antwort schreiben … (Signatur wird automatisch angehängt)" value={text} onChange={(e) => setText(e.target.value)} />
+                {!selected.tenant_id && (
+                  <select aria-label="Firma wählen" value={pickTenant} onChange={(e) => setPickTenant(e.target.value)} className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm">
+                    <option value="">Firma wählen …</option>
+                    {senders.map((s) => <option key={s.tenant_id} value={s.tenant_id}>{s.name}</option>)}
+                  </select>
+                )}
                 <AttachmentPicker value={files} onChange={setFiles} />
                 <Button onClick={send} disabled={sending || !text.trim()} className="rounded-full">
                   <span>{sending ? "Wird gesendet …" : "Antwort senden"}</span>

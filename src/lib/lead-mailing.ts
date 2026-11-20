@@ -151,3 +151,25 @@ export function matchMailsToPeople<T extends { id: string; created_at: string; a
   }
   return { latest, byPerson };
 }
+
+/** gmail.com und googlemail.com sind dasselbe Postfach. */
+export function normalizeMailAddress(addr: string | null | undefined): string {
+  const a = String(addr ?? "").trim().toLowerCase();
+  return a.endsWith("@googlemail.com") ? a.replace(/@googlemail\.com$/, "@gmail.com") : a;
+}
+export function mailAddressVariants(addr: string): string[] {
+  const n = normalizeMailAddress(addr);
+  return n.endsWith("@gmail.com") ? [n, n.replace(/@gmail\.com$/, "@googlemail.com")] : [n];
+}
+const domainOf = (a: string) => a.split("@")[1] ?? "";
+/** Firma anhand der Empfängeradresse: exakte Absenderadresse, sonst gleiche (Sub-)Domain. */
+export function resolveTenantFromRecipient(to: string[], senders: { tenant_id: string; sender_email: string | null }[]): string | null {
+  const tos = to.map(normalizeMailAddress).filter(Boolean);
+  for (const t of tos) { const hit = senders.find((s) => normalizeMailAddress(s.sender_email) === t); if (hit) return hit.tenant_id; }
+  for (const t of tos) {
+    const d = domainOf(t);
+    const hit = senders.find((s) => { const sd = domainOf(normalizeMailAddress(s.sender_email)); return !!sd && (d === sd || d.endsWith("." + sd) || sd.endsWith("." + d)); });
+    if (hit) return hit.tenant_id;
+  }
+  return null;
+}
