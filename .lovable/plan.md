@@ -1,29 +1,37 @@
-# Personalleiter-Konto: nur zugewiesene Personen sehen
+# Caller-Konto, Termine und Anruf-Liste
 
-## Idee statt Farben
-Die rote/grüne Markierung fällt weg. Stattdessen gibt es bei jeder Person einen Knopf **„Zuweisen an …“**. Dort wählst du den Personalleiter (oder später weitere Caller). Neben dem Namen erscheint dann ein kleines Schild mit seinem Namen, z. B. „Caller: Herr Meier“.
+## 1. Eigenes Caller-Konto
+- Unter **Admin → Konten** legst du ein Konto an, z. B. `caller@caller.de` mit Passwort. Neue Kontoart: **Caller**.
+- Der Caller meldet sich ganz normal im Portal an und sieht nur seine Seiten: **Bewerbungen, Mitarbeiter, Chat, Postfach, Termine, Anruf-Liste**. Einstellungen, Landing Pages, Firmen usw. sieht er nicht.
 
-Warum keine Farbe:
-- Man sieht sofort, **wem** die Person gehört, nicht nur „grün“.
-- Es funktioniert auch mit mehreren Callern, ohne dass die Farben ausgehen.
-- Die Zuweisung bleibt beim Wechsel vom Bewerber zum Mitarbeiter erhalten, so wie die Markierung bisher.
+## 2. Grün = „gehört dem Caller“
+- Die bisherige Markierung bleibt. **Grün** bedeutet ab jetzt „dem Caller zugewiesen“. Blau fällt weg.
+- Markierst du z. B. Ali Usman grün, sieht der Caller:
+  - Ali Usman in **Bewerbungen**
+  - Ali Usman in **Mitarbeiter**, sobald er sich als Mitarbeiter registriert (die Markierung wandert automatisch mit)
+  - den **Chat** mit Ali Usman
+  - im **Postfach** den Mailverkehr mit Ali Usman
+- Alle anderen Personen sind für den Caller unsichtbar. Er kann bei seinen Personen im Chat und per Mail antworten.
+- Nimmst du die Markierung weg, verschwindet die Person sofort beim Caller.
 
-## Was der Personalleiter sieht
-- Er meldet sich mit eigenem Konto an und sieht nur **Chat** und **Postfach**.
-- **Chat:** nur die Personen, die du ihm zugewiesen hast. Er kann dort lesen und antworten.
-- **Postfach:** nur die Mails dieser Personen. Er kann antworten, aber keine neuen Mails an fremde Adressen schicken.
-- Bewerberliste, Mitarbeiterliste, Einstellungen, Landing Pages usw. sieht er nicht.
+## 3. Termine im Portal
+Es gibt schon eine Terminseite mit Buchungslink. Für Telefontermine wird sie erweitert:
+- Bei jeder Person ein Knopf **„Telefontermin anlegen“**: Datum, Uhrzeit, Notiz.
+- Wahlweise schickt das Portal der Person eine Mail mit dem Termin, oder die Person bekommt einen Buchungslink und sucht sich selbst eine Zeit aus.
+- Der Caller sieht in **Termine** alle Telefontermine seiner Personen, nach Tag sortiert, mit Telefonnummer zum Anklicken.
 
-## Was du siehst
-- In Bewerberliste, Mitarbeiterliste und Chat gibt es den Knopf „Zuweisen an …“ und einen Filter „Nur zugewiesene von …“.
-- Unter **Admin → Konten** legst du das Konto an, als neue Art „Caller / Personalleiter“.
+## 4. Anruf-Liste mit Stand
+Eine neue Seite **„Anruf-Liste“** für Caller und Admin, eine Zeile pro Person:
 
-## Was wegfällt
-- Die grün/blaue Kontakt-Markierung mit ihrem Auswahlknopf und Filter in Bewerber-, Mitarbeiter- und Chat-Liste. Die gespeicherten Markierungen bleiben in der Datenbank, werden aber nicht mehr angezeigt.
+| Name | Bewerber/Mitarbeiter | Nächster Termin | Stand | Letzter Anruf | Notiz |
+
+- **Stand** zum Auswählen: Neu · Termin vereinbart · Nicht erreicht · Rückruf · Interessiert · Macht mit · Kein Interesse.
+- Nach jedem Anruf trägt der Caller ein: Ergebnis, kurze Notiz, ggf. nächster Termin. Daraus entsteht pro Person ein **Verlauf**, z. B. „20.11. nicht erreicht → 21.11. Rückruf → 22.11. macht mit“.
+- Filter nach Stand und „heute anrufen“. Du als Admin siehst denselben Stand in der Bewerber- und Mitarbeiter-Ansicht.
 
 ## Technische Details
-- Neue Rolle `caller` in `app_role`, Zuweisung `applications.assigned_caller_id` (uuid → auth.users). Personen werden über `profiles.application_id` / `applications.user_id` aufgelöst, wie bisher beim Marker. Hilfsfunktion `is_assigned_caller(uid, application_id)` (security definer).
-- RLS: Caller sehen nur `chat_conversations`/`chat_messages` und `lead_messages` zu zugewiesenen Personen. Postfach-Serverfunktionen (`listMailThreads`, `getMailThread`, `sendPortalMail`, `setThreadHandled`) erlauben `caller` und filtern serverseitig auf zugewiesene Personen bzw. deren Adressen. Senden ist nur an diese Adressen erlaubt.
-- Konto-Anlage über die bestehenden `staff-accounts`-Funktionen, erweitert um Rollenwahl. Login leitet Caller direkt in den Chat. Die Seitenleiste zeigt für Caller nur Chat und Postfach.
-- `ContactMarkerPicker` und `use-contact-markers` werden aus den Listen entfernt, die Spalte `contact_marker` bleibt bestehen. Die AGENTS.md-Regel wird ersetzt.
-- Tests: Caller sieht nur zugewiesene Threads; Senden an eine nicht zugewiesene Adresse wird abgelehnt.
+- Rolle `caller` in `app_role`, Zuweisung über die bestehende `applications.contact_marker = 'green'`. Personen werden wie bisher über `profiles.application_id` / `applications.user_id` aufgelöst. Security-definer-Funktion `caller_can_see_application(app_id)` / `caller_can_see_user(user_id)`.
+- RLS für `caller` auf applications, profiles, chat_conversations, chat_messages, lead_messages (über application_id/profile_id/peer_email der zugewiesenen Personen) und Termine. Postfach-Serverfunktionen lassen `caller` zu und filtern serverseitig. Senden geht nur an Adressen der zugewiesenen Personen.
+- Neue Tabellen `call_status` (application_id, status, next_call_at) und `call_log` (application_id, caller_id, result, note, created_at) mit GRANTs und RLS. Telefontermine kommen in die bestehende Termin-/Buchungs-Tabelle, Typ „Telefon“.
+- Seitenleiste und Login leiten den Caller auf seine Seiten. Blau wird aus der Markierungs-Auswahl entfernt.
+- Tests: Caller sieht nur grüne Personen (inklusive Bewerber → Mitarbeiter); Senden an eine fremde Adresse wird abgelehnt; der Stand wird korrekt fortgeschrieben.
