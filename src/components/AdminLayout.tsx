@@ -1,6 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "@/lib/router-compat";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutGrid, Users, ClipboardList, CheckSquare, CalendarDays, Wallet, LogOut, MessageCircle, Settings, Phone, Search, ShieldCheck, LayoutDashboard, Upload, BarChart3 } from "lucide-react";
+import { LayoutGrid, Users, ClipboardList, CheckSquare, CalendarDays, Wallet, LogOut, MessageCircle, Settings, Phone, PhoneCall, Search, ShieldCheck, LayoutDashboard, Upload, BarChart3 } from "lucide-react";
 import { GlassSidebar, GlassMobileMenuButton, type GlassNavGroup } from "@/components/GlassSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AdminCommandPalette } from "@/components/AdminCommandPalette";
@@ -45,6 +45,7 @@ const navGroups: NavGroup[] = [
       { title: "SMS", url: "/admin/sms", icon: Phone },
       { title: "Lead-Mailing", url: "/admin/lead-mailing", icon: Upload },
       { title: "Postfach", url: "/admin/postfach", icon: MessageCircle },
+      { title: "Anruf-Liste", url: "/admin/anrufe", icon: PhoneCall },
       { title: "WebID-Simulation", url: "/admin/webid-sim", icon: ShieldCheck },
     ],
   },
@@ -57,11 +58,15 @@ const navGroups: NavGroup[] = [
   },
 ];
 
+// Caller sehen nur diese Seiten (Daten zusätzlich per Datenbank-Regeln auf grün markierte Personen begrenzt).
+export const CALLER_PATHS = ["/admin/anrufe", "/admin/bewerbungen", "/admin/mitarbeiter", "/admin/chat", "/admin/postfach"];
+const callerAllowed = (path: string) => CALLER_PATHS.some((p) => path === p || path.startsWith(p + "/"));
+
 // Einstellungen liegen fest am unteren Rand der Sidebar.
 const settingsItem: NavItem = { title: "Einstellungen", url: "/admin/settings", icon: Settings, end: true };
 
 export default function AdminLayout() {
-  const { user, isAdmin, canAccessAdmin, loading, signOut } = useAuth();
+  const { user, isAdmin, isCaller, canAccessAdmin, loading, signOut } = useAuth();
   const badges = useAdminBadges();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -70,8 +75,9 @@ export default function AdminLayout() {
   useEffect(() => {
     if (!loading && !user) navigate("/login");
     if (!loading && user && !canAccessAdmin) navigate("/dashboard");
-    if (!loading && user && canAccessAdmin && !isAdmin) navigate("/login");
-  }, [user, isAdmin, canAccessAdmin, loading, pathname, navigate]);
+    if (!loading && user && canAccessAdmin && !isAdmin && !isCaller) navigate("/login");
+    if (!loading && user && !isAdmin && isCaller && !callerAllowed(pathname)) navigate("/admin/anrufe");
+  }, [user, isAdmin, isCaller, canAccessAdmin, loading, pathname, navigate]);
 
   if (loading) {
     return (
@@ -84,9 +90,15 @@ export default function AdminLayout() {
     );
   }
 
-  if (!user || !canAccessAdmin || !isAdmin) return null;
+  const callerOnly = !isAdmin && isCaller;
+  if (!user || !canAccessAdmin || (!isAdmin && !isCaller)) return null;
+  if (callerOnly && !callerAllowed(pathname)) return null;
 
-  const groups: GlassNavGroup[] = [
+  const groups: GlassNavGroup[] = callerOnly ? [{
+    label: "Caller",
+    items: CALLER_PATHS.map((url) => navGroups.flatMap((g) => g.items).find((i) => i.url === url)!)
+      .map((i) => ({ ...i, badge: 0 })),
+  }] : [
     { items: [{ ...dashboardItem }] },
     ...navGroups.map((g): GlassNavGroup => ({
       label: g.label,
@@ -106,17 +118,17 @@ export default function AdminLayout() {
       <GlassSidebar
         brand={brand}
         groups={groups}
-        footer={
+        footer={callerOnly ? undefined : (
           <a href="/admin/settings" className="glass-nav-link">
             <Settings className="h-4 w-4 shrink-0" />
             <span className="truncate">{settingsItem.title}</span>
           </a>
-        }
+        )}
       />
       <header className="portal-header sticky top-0 z-30 px-3 sm:px-6 pt-3">
         <div className="glass-panel rounded-2xl sm:rounded-full min-h-16 grid grid-cols-[auto_minmax(0,1fr)_auto_auto] sm:flex items-center gap-1 sm:gap-3 px-2 sm:px-4">
           <GlassMobileMenuButton />
-          <span className="hidden sm:inline text-sm font-medium truncate">Willkommen, Admin</span>
+          <span className="hidden sm:inline text-sm font-medium truncate">{callerOnly ? "Willkommen, Caller" : "Willkommen, Admin"}</span>
           <Button
             variant="ghost"
             onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
@@ -144,7 +156,7 @@ export default function AdminLayout() {
       <main className="portal-content flex-1 min-w-0 pb-10">
         <Outlet />
       </main>
-      <AdminCommandPalette />
+      {!callerOnly && <AdminCommandPalette />}
     </div>
   );
 }

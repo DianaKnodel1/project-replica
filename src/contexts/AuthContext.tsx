@@ -8,6 +8,8 @@ interface AuthContextType {
   isAdmin: boolean;
   /** Eingeschränktes Admin-Konto: nur Aufträge + Chat. */
   isStaff: boolean;
+  /** Caller: sieht nur grün markierte Personen (Bewerbungen, Mitarbeiter, Chat, Postfach, Anruf-Liste). */
+  isCaller: boolean;
   /** Darf den Admin-Bereich überhaupt betreten (Admin oder Admin-Mitarbeiter). */
   canAccessAdmin: boolean;
   loading: boolean;
@@ -19,6 +21,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   isAdmin: false,
   isStaff: false,
+  isCaller: false,
   canAccessAdmin: false,
   loading: true,
   signOut: async () => {},
@@ -31,6 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isStaff, setIsStaff] = useState(false);
+  const [isCaller, setIsCaller] = useState(false);
   // Cache: only re-check admin role when user.id actually changes
   const lastCheckedUserIdRef = useRef<string | null>(null);
 
@@ -41,16 +45,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     let cancelled = false;
 
-    const checkRoles = async (userId: string): Promise<{ admin: boolean; staff: boolean }> => {
+    const checkRoles = async (userId: string): Promise<{ admin: boolean; staff: boolean; caller: boolean }> => {
       try {
         const { data } = await supabase
           .from("user_roles")
           .select("role")
           .eq("user_id", userId);
         const roles = (data ?? []).map((r: { role: string }) => r.role);
-        return { admin: roles.includes("admin"), staff: roles.includes("admin_mitarbeiter") };
+        return { admin: roles.includes("admin"), staff: roles.includes("admin_mitarbeiter"), caller: roles.includes("caller") };
       } catch {
-        return { admin: false, staff: false };
+        return { admin: false, staff: false, caller: false };
       }
     };
 
@@ -73,12 +77,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(nextSession);
         setIsAdmin(roles.admin);
         setIsStaff(roles.staff);
+        setIsCaller(roles.caller);
       } else {
         if (cancelled) return;
         lastCheckedUserIdRef.current = null;
         setSession(null);
         setIsAdmin(false);
         setIsStaff(false);
+        setIsCaller(false);
       }
       if (!cancelled) setLoading(false);
     };
@@ -118,7 +124,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user: session?.user ?? null,
         isAdmin,
         isStaff,
-        canAccessAdmin: isAdmin || isStaff,
+        isCaller,
+        canAccessAdmin: isAdmin || isStaff || isCaller,
         loading,
         signOut,
       }}

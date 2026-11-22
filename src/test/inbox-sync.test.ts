@@ -36,18 +36,18 @@ describe("Postfach-Abruf aus Resend", () => {
 describe("Speicherung eingegangener Mails", () => {
   const event = { type: "email.received", data: { id: "received-1", from: "person@example.org", to: ["info@example.org"], text: "Antwort", subject: "Re: Termin" } };
   it("meldet einen Speicherfehler statt Erfolg", async () => {
-    mocks.from.mockReturnValueOnce(dbChain({ data: { profile_id: "profile-1", kind: "employee" } }))
+    mocks.from.mockReturnValueOnce(dbChain({ data: { profile_id: "profile-1", kind: "employee" } })).mockReturnValueOnce(dbChain({ data: [] })).mockReturnValueOnce(dbChain({ data: {} }))
       .mockReturnValueOnce(dbChain({ error: { code: "42P10", message: "missing conflict constraint" } }));
     await expect(handleResendEvent(event)).rejects.toThrow("Eingegangene Mail konnte nicht gespeichert werden");
   });
   it("speichert einen neuen Eingang ungelesen mit geprüftem INSERT", async () => {
     const insert = dbChain({ error: null });
-    mocks.from.mockReturnValueOnce(dbChain({ data: { profile_id: "profile-1", kind: "employee" } })).mockReturnValueOnce(insert);
+    mocks.from.mockReturnValueOnce(dbChain({ data: { profile_id: "profile-1", kind: "employee" } })).mockReturnValueOnce(dbChain({ data: [] })).mockReturnValueOnce(dbChain({ data: {} })).mockReturnValueOnce(insert);
     await expect(handleResendEvent(event)).resolves.toEqual({ stored: true });
     expect(insert.insert).toHaveBeenCalledWith(expect.objectContaining({ provider_id: "received-1", direction: "in", handled: false, body_text: "Antwort" }));
   });
   it("zählt einen bestätigten doppelten Eingang nicht erneut", async () => {
-    mocks.from.mockReturnValueOnce(dbChain({ data: { kind: "employee" } }))
+    mocks.from.mockReturnValueOnce(dbChain({ data: { kind: "employee" } })).mockReturnValueOnce(dbChain({ data: [] })).mockReturnValueOnce(dbChain({ data: {} }))
       .mockReturnValueOnce(dbChain({ error: { code: "23505", message: "duplicate" } }))
       .mockReturnValueOnce(dbChain({ data: { id: "stored-1" }, error: null }));
     await expect(handleResendEvent(event)).resolves.toEqual({ stored: false });
@@ -55,7 +55,7 @@ describe("Speicherung eingegangener Mails", () => {
   it("übernimmt den Mailinhalt aus dem Empfangsdetail", async () => {
     const insert = dbChain({ error: null });
     mocks.from.mockReturnValueOnce(dbChain({ data: { resend_api_key: "test-key" } }))
-      .mockReturnValueOnce(dbChain({ data: { kind: "employee" } })).mockReturnValueOnce(insert);
+      .mockReturnValueOnce(dbChain({ data: { kind: "employee" } })).mockReturnValueOnce(dbChain({ data: [] })).mockReturnValueOnce(dbChain({ data: {} })).mockReturnValueOnce(insert);
     vi.stubGlobal("fetch", vi.fn(async () => Response.json({ text: "Vollständige Antwort" })));
     await handleResendEvent({ ...event, data: { ...event.data, text: "" } });
     expect(insert.insert).toHaveBeenCalledWith(expect.objectContaining({ body_text: "Vollständige Antwort" }));
@@ -70,7 +70,7 @@ describe("Speicherung eingegangener Mails", () => {
     vi.useFakeTimers();
     mocks.from.mockReturnValueOnce(dbChain({ data: { resend_api_key: "test-key" } }))
       .mockReturnValueOnce(dbChain({ data: [], error: null }))
-      .mockReturnValueOnce(dbChain({ data: { kind: "employee" } }))
+      .mockReturnValueOnce(dbChain({ data: { kind: "employee" } })).mockReturnValueOnce(dbChain({ data: [] })).mockReturnValueOnce(dbChain({ data: {} }))
       .mockReturnValueOnce(dbChain({ error: { code: "42501", message: "permission denied" } }));
     vi.stubGlobal("fetch", vi.fn(async () => Response.json({ data: [{ ...event.data, created_at: new Date().toISOString() }], has_more: false })));
     const result = syncReceivedEmails();

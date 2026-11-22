@@ -17,6 +17,7 @@ import { Lock, Save, Palette, Bot, ArrowRight, Globe, Mail, History, Handshake, 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookingLimitsCard } from "@/components/admin/BookingLimitsCard";
 import { WhatsAppSupportCard } from "@/components/admin/WhatsAppSupportCard";
+import { CallerAccountsCard } from "@/components/admin/CallerAccountsCard";
 import { Link } from "@tanstack/react-router";
 
 function AdminSettingsPage() {
@@ -72,6 +73,7 @@ function AdminSettingsPage() {
             {section.value === "bewerbung" && <BookingLimitsCard />}
             {section.value === "bewerbung" && <WhatsAppSupportCard />}
             
+            {section.value === "konto" && <CallerAccountsCard />}
             {section.value === "konto" && (
               <>
                 <Card>

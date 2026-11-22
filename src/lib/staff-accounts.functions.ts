@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const STAFF_ROLE = "admin_mitarbeiter";
+const RoleSchema = z.enum(["admin_mitarbeiter", "caller"]).default("admin_mitarbeiter");
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
   const { data, error } = await ctx.supabase
@@ -17,7 +17,8 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
 
 export const listStaffAccounts = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
+  .inputValidator((input: unknown) => z.object({ role: RoleSchema }).parse(input ?? {}))
+  .handler(async ({ data: input, context }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const sb = supabaseAdmin as any;
@@ -25,7 +26,7 @@ export const listStaffAccounts = createServerFn({ method: "POST" })
     const { data: roles, error } = await sb
       .from("user_roles")
       .select("user_id")
-      .eq("role", STAFF_ROLE);
+      .eq("role", input.role);
     if (error) throw new Error(error.message);
 
     const ids: string[] = (roles ?? []).map((r: any) => r.user_id);
@@ -98,6 +99,7 @@ const CreateStaffSchema = z.object({
   email: z.string().email(),
   full_name: z.string().trim().min(1),
   password: z.string().min(8),
+  role: RoleSchema,
 });
 
 export const createStaffAccount = createServerFn({ method: "POST" })
@@ -140,7 +142,7 @@ export const createStaffAccount = createServerFn({ method: "POST" })
 
     const { error: roleErr } = await sb
       .from("user_roles")
-      .upsert({ user_id: uid, role: STAFF_ROLE }, { onConflict: "user_id,role" });
+      .upsert({ user_id: uid, role: data.role as any }, { onConflict: "user_id,role" });
     if (roleErr) {
       await supabaseAdmin.auth.admin.deleteUser(uid).catch(() => {});
       throw new Error(`Rolle: ${roleErr.message}`);
@@ -152,14 +154,14 @@ export const createStaffAccount = createServerFn({ method: "POST" })
         entity_type: "profile",
         entity_id: uid,
         actor_id: context.userId,
-        comment: `Admin-Mitarbeiter ${data.full_name} (${data.email}) angelegt`,
+        comment: `${data.role === "caller" ? "Caller" : "Admin-Mitarbeiter"} ${data.full_name} (${data.email}) angelegt`,
       });
     } catch {}
 
     return { ok: true, user_id: uid };
   });
 
-const RevokeSchema = z.object({ user_id: z.string().uuid() });
+const RevokeSchema = z.object({ user_id: z.string().uuid(), role: RoleSchema });
 
 export const revokeStaffAccount = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -172,7 +174,7 @@ export const revokeStaffAccount = createServerFn({ method: "POST" })
       .from("user_roles")
       .delete()
       .eq("user_id", data.user_id)
-      .eq("role", STAFF_ROLE);
+      .eq("role", data.role as any);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

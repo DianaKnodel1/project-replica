@@ -11,6 +11,9 @@ import { Link } from "@tanstack/react-router";
 import { AttachmentPicker, AttachmentList, type PendingAttachment } from "@/components/mail/MailAttachments";
 import { syncInbox, listMailThreads, getMailThread, setThreadHandled, sendPortalMail, getMailComposeContext } from "@/lib/lead-mailing.functions";
 import { ComposeMailDialog } from "@/components/mail/ComposeMailDialog";
+import { CallAppointmentDialog } from "@/components/calls/CallDialogs";
+import { useAuth } from "@/contexts/AuthContext";
+import { CalendarPlus } from "lucide-react";
 import { MAIL_BLOCK_PREFIX } from "@/lib/lead-mailing";
 async function sendWithOverride(fn: (o: boolean) => Promise<unknown>) {
   try { return await fn(false); } catch (e: any) {
@@ -56,6 +59,8 @@ function PostfachPage() {
   const handledFn = useServerFn(setThreadHandled);
   const sendFn = useServerFn(sendPortalMail);
   const [files, setFiles] = useState<PendingAttachment[]>([]);
+  const { isAdmin } = useAuth();
+  const [apptOpen, setApptOpen] = useState(false);
   const ctxFn = useServerFn(getMailComposeContext);
   const [senders, setSenders] = useState<{ tenant_id: string; name: string }[]>([]);
   const [pickTenant, setPickTenant] = useState("");
@@ -113,6 +118,7 @@ function PostfachPage() {
     } finally { syncInFlight.current = false; setSyncing(false); }
   }, [syncFn]);
   useEffect(() => {
+    if (!isAdmin) return; // Abruf beim Anbieter nur für Admins; Caller sehen die abgerufenen Mails.
     sync(false);
     const h = setInterval(() => sync(false), 3 * 60 * 1000);
     return () => clearInterval(h);
@@ -157,12 +163,12 @@ function PostfachPage() {
           <h1 className="text-3xl font-heading font-semibold tracking-tight">Postfach</h1>
           <p className="text-sm text-muted-foreground">E-Mails mit Leads, Bewerbern und Mitarbeitern an einem Ort.</p>
         </div>
-        <div className="flex gap-2">
+        {isAdmin && <div className="flex gap-2">
           <Button variant="outline" onClick={() => sync(true)} disabled={syncing} className="rounded-full gap-2">
             <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} /><span>Neue Mails abrufen</span>
           </Button>
           <Button onClick={() => setComposeOpen(true)} className="rounded-full gap-2"><PenSquare className="h-4 w-4" />Neue Nachricht</Button>
-        </div>
+        </div>}
       </div>
 
       {syncNotice && <p role={syncNotice.error ? "alert" : "status"} className={`text-sm break-words ${syncNotice.error ? "text-destructive" : "text-muted-foreground"}`}>{syncNotice.text}</p>}
@@ -222,11 +228,14 @@ function PostfachPage() {
                 <div className="min-w-0 break-words">
                   <div className="font-semibold">{selected.name}</div>
                   <div className="text-xs text-muted-foreground break-all">{selected.peer} · {selected.contact ? `Kontaktanfrage${selected.site ? ` über ${selected.site}` : ""}` : `E-Mail · ${KIND_LABEL[selected.kind] ?? ""}`}</div>
-                  {(selected.profile_id || selected.application_id) && (
+                  {isAdmin && (selected.profile_id || selected.application_id) && (
                     <Link to="/admin/personen/$id" params={{ id: selected.profile_id ?? selected.application_id }} className="text-xs text-primary underline">Profil öffnen</Link>
                   )}
                 </div>
                 <div className="flex flex-wrap gap-2">
+                  {(selected.profile_id || selected.application_id) && (
+                    <Button size="sm" className="rounded-full gap-1.5" onClick={() => setApptOpen(true)}><CalendarPlus className="h-4 w-4" /><span>Termin anlegen</span></Button>
+                  )}
                   <Button size="sm" variant="outline" className="rounded-full" onClick={() => markHandled(true)}>Als erledigt markieren</Button>
                   <Button size="sm" variant="ghost" className="rounded-full" onClick={() => markHandled(false)}>Wieder offen</Button>
                 </div>
@@ -266,6 +275,7 @@ function PostfachPage() {
         </div>
       </div>
 
+      <CallAppointmentDialog open={apptOpen} onOpenChange={setApptOpen} applicationId={selected?.application_id ?? null} profileId={selected?.profile_id ?? null} name={selected?.name ?? ""} />
       <ComposeMailDialog open={composeOpen} onOpenChange={setComposeOpen} onSent={load} />
     </div>
   );

@@ -10,6 +10,16 @@ async function requireAdmin(ctx: { supabase: any; userId: string }) {
   if (!data) throw new Error("Nicht autorisiert");
 }
 
+/** Postfach-Zugriff: Admin (alles) oder Caller (nur zugewiesene Personen, per RLS). */
+async function requireMailAccess(ctx: { supabase: any; userId: string }): Promise<"admin" | "caller"> {
+  const { data, error } = await ctx.supabase.from("user_roles").select("role").eq("user_id", ctx.userId);
+  if (error) throw new Error(error.message);
+  const roles = (data ?? []).map((r: any) => String(r.role));
+  if (roles.includes("admin")) return "admin";
+  if (roles.includes("caller")) return "caller";
+  throw new Error("Nicht autorisiert");
+}
+
 const mask = (v: string | null | undefined) => (v?.trim() ? `••••••••${v.trim().slice(-4)}` : null);
 
 export const getLeadMailingOverview = createServerFn({ method: "POST" })
@@ -163,7 +173,7 @@ export const listMailThreads = createServerFn({ method: "POST" })
     q: z.string().trim().max(120).default(""),
   }).parse(i ?? {}))
   .handler(async ({ data, context }) => {
-    await requireAdmin(context);
+    await requireMailAccess(context);
     const db = context.supabase as any;
     const rows: any[] = [];
     for (let offset = 0; ; offset += 500) {
@@ -236,7 +246,7 @@ export const getMailThread = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => z.object({ peer: z.string().trim().toLowerCase().email() }).parse(i))
   .handler(async ({ data, context }) => {
-    await requireAdmin(context);
+    await requireMailAccess(context);
     const db = context.supabase as any;
     const { data: msgs, error } = await db.from("lead_messages").select("*")
       .or(`peer_email.eq.${data.peer},from_email.ilike.${data.peer},to_email.ilike.${data.peer}`)
@@ -249,7 +259,7 @@ export const setThreadHandled = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => z.object({ peer: z.string().trim().toLowerCase().email(), handled: z.boolean() }).parse(i))
   .handler(async ({ data, context }) => {
-    await requireAdmin(context);
+    await requireMailAccess(context);
     const { error } = await (context.supabase as any).from("lead_messages")
       .update({ handled: data.handled }).eq("direction", "in").or(`peer_email.eq.${data.peer},from_email.ilike.${data.peer}`);
     if (error) throw new Error(error.message);
@@ -316,7 +326,7 @@ export const getMailComposeContext = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => z.object({ profileId: z.string().uuid().optional(), userId: z.string().uuid().optional(), applicationId: z.string().uuid().optional() }).parse(i ?? {}))
   .handler(async ({ data, context }) => {
-    await requireAdmin(context);
+    await requireMailAccess(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const db = supabaseAdmin as any;
     const [{ data: tenants }, { data: settings }, { data: ss }] = await Promise.all([
@@ -359,9 +369,16 @@ export const sendPortalMail = createServerFn({ method: "POST" })
     })).max(10).default([]),
   }).parse(i))
   .handler(async ({ data, context }) => {
-    await requireAdmin(context);
+    const access = await requireMailAccess(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const db = supabaseAdmin as any;
+    if (access === "caller") {
+      const { data: ok } = await (context.supabase as any).rpc("caller_can_see_mail", {
+        _user_id: context.userId, _app_id: data.applicationId ?? null, _profile_id: data.profileId ?? null, _peer: data.to,
+      });
+      if (!ok) throw new Error("Diese Person ist dir nicht zugewiesen.");
+      data.override = false;
+    }
     if (!data.profileId && !data.applicationId) {
       const m = await resolveByEmail(db, data.to, data.tenantId);
       if (m) { data.profileId = m.profile_id; data.applicationId = m.application_id; }
@@ -486,7 +503,12 @@ export const getMailAttachmentUrl = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => z.object({ path: z.string().min(3).max(400).regex(/^(in|out)\//) }).parse(i))
   .handler(async ({ data, context }) => {
-    await requireAdmin(context);
+    const access = await requireMailAccess(context);
+    if (access === "caller") {
+      const { data: rows } = await (context.supabase as any).from("lead_messages").select("id")
+        .filter("attachments", "cs", JSON.stringify([{ path: data.path }])).limit(1);
+      if (!rows?.length) throw new Error("Nicht autorisiert");
+    }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: signed, error } = await (supabaseAdmin as any).storage.from("mail-attachments").createSignedUrl(data.path, 300);
     if (error || !signed?.signedUrl) throw new Error(`Anhang nicht verfügbar: ${error?.message ?? "unbekannt"}`);

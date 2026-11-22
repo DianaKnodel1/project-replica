@@ -96,7 +96,7 @@ export function useAdminData() {
 }
 
 export function AdminDataProvider({ children }: { children: ReactNode }) {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { toast } = useToast();
   const fetchUserEmails = useServerFn(listUserEmails);
   const [applications, setApplications] = useState<Application[]>([]);
@@ -222,10 +222,10 @@ export function AdminDataProvider({ children }: { children: ReactNode }) {
 
       const backgroundTasks: Promise<{ ok: boolean; label: string; error?: string }>[] = [
         track<{ user_id: string; email_confirmed: boolean }[]>("E-Mail-Bestätigungen",
-          () => (supabase as any).rpc("admin_get_email_confirmations").then((r: any) => (r.data ?? []) as { user_id: string; email_confirmed: boolean }[]),
+          () => !isAdmin ? Promise.resolve([] as { user_id: string; email_confirmed: boolean }[]) : (supabase as any).rpc("admin_get_email_confirmations").then((r: any) => (r.data ?? []) as { user_id: string; email_confirmed: boolean }[]),
           (confs) => setEmailConfirmedUserIds(new Set(confs.filter((c) => c.email_confirmed).map((c) => c.user_id)))),
         track("E-Mail-Adressen",
-          () => fetchUserEmails(),
+          () => (isAdmin ? fetchUserEmails() : Promise.resolve({ users: [] })),
           (res: any) => setUserEmails(new Map(((res?.users ?? []) as Array<{ user_id: string; email: string }>).map((u) => [u.user_id, u.email])))),
         track("KYC",
           () => fetchAll<KycRow>(() => supabase.from("kyc_verifications").select(KYC_OVERVIEW_COLUMNS).order("created_at", { ascending: false })),
@@ -263,7 +263,7 @@ export function AdminDataProvider({ children }: { children: ReactNode }) {
     })();
     inFlightRef.current = run;
     try { await run; } finally { inFlightRef.current = null; }
-  }, [toast, fetchUserEmails]);
+  }, [toast, fetchUserEmails, isAdmin]);
 
 
   useEffect(() => {

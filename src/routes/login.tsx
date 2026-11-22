@@ -173,6 +173,7 @@ function LoginPage() {
       const roles: string[] = (roleRes.data ?? []).map((r: { role: string }) => r.role);
       const isAdminUser = roles.includes("admin");
       const isStaffUser = roles.includes("admin_mitarbeiter");
+      const isCallerUser = roles.includes("caller");
 
       // Gesperrtes Konto: bewusst die normale Fehlermeldung — der Nutzer
       // soll von der Sperre nichts mitbekommen.
@@ -191,7 +192,7 @@ function LoginPage() {
         return;
       }
 
-      if (!isAdminUser && tenant && profile && profile.tenant_id && profile.tenant_id !== tenant.id) {
+      if (!isAdminUser && !isCallerUser && tenant && profile && profile.tenant_id && profile.tenant_id !== tenant.id) {
         await supabase.auth.signOut();
         setAuthError("Bitte melde dich über deine Unternehmensseite an.");
         toast({ title: "Fehler", description: "Bitte melde dich über deine Unternehmensseite an.", variant: "destructive" });
@@ -200,6 +201,10 @@ function LoginPage() {
 
       if (isAdminUser) {
         navigate("/admin");
+        return;
+      }
+      if (isCallerUser) {
+        navigate("/admin/anrufe");
         return;
       }
       if (isStaffUser) {
